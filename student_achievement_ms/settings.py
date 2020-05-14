@@ -76,8 +76,15 @@ WSGI_APPLICATION = 'student_achievement_ms.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+       # 'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+       #如果出错，可在django/db/backends/mysql的operations.py里修改一行源代码（encode改成decode）
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'sams',
+        'USER': 'root',
+        'PASSWORD': '123456',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
 
@@ -119,3 +126,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#session配置
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
