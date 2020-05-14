@@ -76,8 +76,6 @@ WSGI_APPLICATION = 'student_achievement_ms.wsgi.application'
 
 DATABASES = {
     'default': {
-       # 'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
        #如果出错，可在django/db/backends/mysql的operations.py里修改一行源代码（encode改成decode）
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'sams',
