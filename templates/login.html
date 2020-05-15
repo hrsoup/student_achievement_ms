@@ -101,11 +101,29 @@
         background-size: cover;
   }
       </style>
+      <script>
+       function getValue()
+          {
+           var temp;
+	            temp=document.my_form.my_select.value
+
+	          if (temp=="student"){
+		              window.location.href='http://localhost:63342/student_achievement_ms/templates/student1.html'
+	              }
+	          if (temp=="teacher"){
+		              window.location.href='http://localhost:63342/student_achievement_ms/templates/teacher1.html'
+	              }
+	          if (temp=="admin"){
+		              window.location.href='http://localhost:63342/student_achievement_ms/templates/admin1.html'
+	              }
+          }
+      </script>
+
 </head>
 <body>
       <div class="mainblock">
          <h2>请登录</h2>
-         <form>
+         <form name="my_form">
              <div class="inputbox">
                  <input type="text" name="" required="">
                  <label>用户名</label>
@@ -115,19 +133,19 @@
                  <label>密码</label>
              </div>
              <div class="selectbox">
-               <select>
+               <select name="my_select">
                    <option value ="student">学生</option>
                    <option value ="teacher">教师</option>
                    <option value="admin">管理员</option>
                </select>
              </div>
              <div class="submit">
-               <input type="button" name="" value="登录">
+               <input type="button" name="" value="登录" onclick="getValue()">
              </div>
          </form>
+
      </div>
      <div class="background">
      </div>
-
 </body>
 </html>
