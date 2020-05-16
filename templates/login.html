@@ -102,20 +102,10 @@
   }
       </style>
       <script>
-       function getValue()
+       function LoginBtn()
           {
-           var temp;
-	            temp=document.my_form.my_select.value
-
-	          if (temp=="student"){
-		              window.location.href='http://localhost:63342/student_achievement_ms/templates/student1.html'
-	              }
-	          if (temp=="teacher"){
-		              window.location.href='http://localhost:63342/student_achievement_ms/templates/teacher1.html'
-	              }
-	          if (temp=="admin"){
-		              window.location.href='http://localhost:63342/student_achievement_ms/templates/admin1.html'
-	              }
+              var type=my_select.value;
+              pprint
           }
       </script>
 
@@ -123,13 +113,14 @@
 <body>
       <div class="mainblock">
          <h2>请登录</h2>
-         <form name="my_form">
+         <form name="my_form" action="/pro/login/" method="post">
+             {% csrf_token %}
              <div class="inputbox">
-                 <input type="text" name="" required="">
+                 <input type="text" name="username" required="">
                  <label>用户名</label>
              </div>
              <div class="inputbox">
-                 <input type="password" name=" " required="">
+                 <input type="password" name="password" required="">
                  <label>密码</label>
              </div>
              <div class="selectbox">
@@ -140,7 +131,7 @@
                </select>
              </div>
              <div class="submit">
-               <input type="button" name="" value="登录" onclick="getValue()">
+               <input type="submit" name="" value="登录" >
              </div>
          </form>
 
