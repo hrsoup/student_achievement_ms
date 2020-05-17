@@ -3,7 +3,11 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 
 def student1(request):#个人信息
-    return render(request,'student1.html')
+    if 'sessionid' in request.COOKIES and request.session['role'] == 'student':
+        return render(request,'student1.html')
+    else:
+        print("用户身份不合法")
+        return redirect('/pro/login/')
 
 def student2(request):#选课信息
     return render(request,'student2.html')
