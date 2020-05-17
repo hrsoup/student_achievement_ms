@@ -127,3 +127,5 @@ STATIC_URL = '/static/'
 
 #session配置
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_AGE = 24*60*60 #设置session的过期时间为1天
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True  #关闭浏览器，cookie就失效
