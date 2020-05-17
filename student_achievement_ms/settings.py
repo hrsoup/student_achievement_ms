@@ -55,7 +55,7 @@ ROOT_URLCONF = 'student_achievement_ms.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],  #添加templates路径
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
