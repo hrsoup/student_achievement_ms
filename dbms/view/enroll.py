@@ -34,13 +34,15 @@ def login(request):
                 print("登录成功")
                 request.session.flush() #清除一下之前的session
                 #新创建一个session，设置该session的属性
-                request.session['role']='student'
+                request.session['role'] = 'student' #用户类型
+                request.session['id'] = result[0][0]    #用户唯一标识
                 obj = redirect('/pro/student1')
                 return obj
         elif usertype == 'teacher':
             cursor.execute("select * from teacher where teacher_name='%s' and password='%s'" % (username,password))
             result = cursor.fetchall()
             connection.close()
+            print(result[0][0])
             if len(result) == 0:
                 obj = render(request,'login.html',status=400)
                 if 'sessionid' in request.COOKIES:
@@ -53,12 +55,14 @@ def login(request):
                 print("登录成功")
                 request.session.flush()
                 request.session['role']='teacher'
+                request.session['id'] = result[0][0]
                 obj = redirect('/pro/teacher1')
                 return obj
         else:
             cursor.execute("select * from admin where admin_name='%s' and password='%s'" % (username,password))
             result = cursor.fetchall()
             connection.close()
+            print(result[0][0])
             if len(result) == 0:
                 obj = render(request,'login.html',status=400)
                 if 'sessionid' in request.COOKIES:
@@ -71,6 +75,7 @@ def login(request):
                 print("登录成功")
                 request.session.flush()
                 request.session['role']='admin'
+                request.session['id'] = result[0][0]
                 obj = redirect('/pro/admin1')
                 return obj
     else:
