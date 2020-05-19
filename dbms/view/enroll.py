@@ -19,7 +19,7 @@ def login(request):
         password = request.POST.get('password')
         usertype = request.POST.get('my_select')
         if usertype == 'student':
-            cursor.execute("select * from student where student_name='%s' and password='%s'" % (username,password)) #数据表中是否有该用户
+            cursor.execute("select * from student where student_name=%s and password=md5(%s)",[username,password]) #数据表中是否有该用户
             result = cursor.fetchall()
             connection.close()
             if len(result) == 0:
@@ -39,7 +39,7 @@ def login(request):
                 obj = redirect('/pro/student1')
                 return obj
         elif usertype == 'teacher':
-            cursor.execute("select * from teacher where teacher_name='%s' and password='%s'" % (username,password))
+            cursor.execute("select * from teacher where teacher_name=%s and password=md5(%s)",[username,password])
             result = cursor.fetchall()
             connection.close()
             print(result[0][0])
@@ -59,7 +59,7 @@ def login(request):
                 obj = redirect('/pro/teacher1')
                 return obj
         else:
-            cursor.execute("select * from admin where admin_name='%s' and password='%s'" % (username,password))
+            cursor.execute("select * from admin where admin_name=%s and password=md5(%s)",[username,password])
             result = cursor.fetchall()
             connection.close()
             print(result[0][0])
@@ -80,3 +80,5 @@ def login(request):
                 return obj
     else:
         return render(request,'login.html')
+
+#def logout(request):    #退出登录
