@@ -42,7 +42,6 @@ def login(request):
             cursor.execute("select * from teacher where teacher_name=%s and password=md5(%s)",[username,password])
             result = cursor.fetchall()
             connection.close()
-            print(result[0][0])
             if len(result) == 0:
                 obj = render(request,'login.html',status=400)
                 if 'sessionid' in request.COOKIES:
@@ -62,7 +61,6 @@ def login(request):
             cursor.execute("select * from admin where admin_name=%s and password=md5(%s)",[username,password])
             result = cursor.fetchall()
             connection.close()
-            print(result[0][0])
             if len(result) == 0:
                 obj = render(request,'login.html',status=400)
                 if 'sessionid' in request.COOKIES:
