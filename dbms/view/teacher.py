@@ -71,7 +71,3 @@ def indexTGrade(request):
     else:
         print("用户身份不合法")
         return redirect('/pro/login/')
-
-def indexTDist(request):
-    print("查询学生成绩分布")
-
