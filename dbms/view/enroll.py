@@ -18,7 +18,7 @@ def login(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         usertype = request.POST.get('my_select')
-        if usertype == 'student':
+        if usertype == 'student':#学生登录的情况
             cursor.execute("select * from student where student_name=%s and password=md5(%s)",[username,password]) #数据表中是否有该用户
             result = cursor.fetchall()
             connection.close()
@@ -38,7 +38,8 @@ def login(request):
                 request.session['id'] = result[0][0]    #用户唯一标识
                 obj = redirect('/pro/student1')
                 return obj
-        elif usertype == 'teacher':
+
+        elif usertype == 'teacher':#教师登录的情况
             cursor.execute("select * from teacher where teacher_name=%s and password=md5(%s)",[username,password])
             result = cursor.fetchall()
             connection.close()
@@ -57,7 +58,8 @@ def login(request):
                 request.session['id'] = result[0][0]
                 obj = redirect('/pro/teacher1')
                 return obj
-        else:
+
+        else:#管理员登录的情况
             cursor.execute("select * from admin where admin_name=%s and password=md5(%s)",[username,password])
             result = cursor.fetchall()
             connection.close()

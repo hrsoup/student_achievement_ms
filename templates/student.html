@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <title>个人信息</title>
@@ -116,12 +116,13 @@
     </div>
     <div class="selectbar">
         <input type="button" name="stu_info" value="个人信息"
-        onclick="javascrtpt:window.location.href='http://127.0.0.1:8000/pro/student1/'"><br><br><br><br>
+        onclick="location.href='/pro/indexStudent'"><br><br><br><br>
         <input type="button" name="stu_course" value="所选课程"
-        onclick="javascrtpt:window.location.href='http://127.0.0.1:8000/pro/student2/'"><br><br><br><br>
+        onclick="location.href='/pro/indexSCourse"><br><br><br><br>
         <input type="button" name="stu_grade" value="个人成绩"
-        onclick="javascrtpt:window.location.href='http://127.0.0.1:8000/pro/student3/'"><br><br><br><br>
-        <input type="button" name="stu_grade" value="成绩分布"><br><br><br><br>
+        onclick="location.href='/pro/indexSGPA'"><br><br><br><br>
+        <input type="button" name="stu_grade" value="成绩分布"
+        onclick="location.href='/pro/indexSGPADIST'"><br><br><br><br>
         <input type="button" name="login_off" value="退出系统"
                onclick="myFunction()" />
     </div>
