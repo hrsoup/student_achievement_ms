@@ -18,7 +18,9 @@ def indexAdmin(request):
         result_list = []
         for r in result:
             result_list.append({"admin_id":r[0],'admin_name':r[2]})
-        print(result_list)
+
+        for i in range(0,len(result_list)):
+            print("管理员ID:%s 姓名:%s" % (result_list[i]['admin_id'], result_list[i]['admin_name']))
         return redirect('/pro/admin/')
     else:
         print("用户身份不合法")
@@ -38,7 +40,9 @@ def indexAllStu(request):
         for r in result:
             result_list.append({"student_id":r[0],'password':r[1],'student_name':r[2],\
                                 'dept':r[3],'major':r[4],'class_id':r[5]})
-        print(result_list)
+        for i in range(0, len(result_list)):
+            print("学生ID:%s 登录密码:%s 姓名:%s 所在学院:%s 所在专业:%s 所在班级:%s" % (result_list[i]['student_id'], result_list[i]['password']
+           ,result_list[i]['student_name'], result_list[i]['dept'],result_list[i]['major'],result_list[i]['class_id']))
         return redirect('/pro/admin/')
     else:
         print("用户身份不合法")
@@ -56,7 +60,9 @@ def indexAllTeacher(request):
         result_list = []
         for r in result:
             result_list.append({"teacher_id":r[0],"password":r[1],'teacher_name':r[2],'dept':r[3]})
-        print(result_list)
+        for i in range(0, len(result_list)):
+            print("教师ID:%s 登录密码:%s 姓名:%s 院系:%s" % (result_list[i]['teacher_id'], result_list[i]['password']
+                                            , result_list[i]['teacher_name'],result_list[i]['dept']))
         return redirect('/pro/admin/')
     else:
         print("用户身份不合法")
@@ -74,7 +80,9 @@ def indexAllCourse(request):
         result_list = []
         for r in result:
             result_list.append({"course_id":r[0],'course_name':r[1],'credits':r[2]})
-        print(result_list)
+        for i in range(0, len(result_list)):
+            print("课程ID:%s 课程名:%s 学分:%d" % (result_list[i]['course_id'], result_list[i]['course_name']
+                                            , result_list[i]['credits']))
         return redirect('/pro/admin/')
     else:
         print("用户身份不合法")

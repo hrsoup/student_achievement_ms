@@ -18,7 +18,9 @@ def indexTeacher(request):
         result_list = []
         for r in result:
             result_list.append({"teacher_id":r[0],'teacher_name':r[2],'dept':r[3]})
-        print(result_list)
+        for i in range(0, len(result_list)):
+            print("教师id:%s 姓名:%s 所在学院:%s " % (result_list[i]['teacher_id'], result_list[i]['teacher_name']
+                                                           , result_list[i]['dept']))
         return redirect('/pro/teacher/')
     else:
         print("用户身份不合法")
@@ -38,7 +40,9 @@ def indexTCourse(request):
         result_list = []
         for r in result:
             result_list.append({"course_id":r[0],'course_name':r[1],'credits':r[2]})
-        print(result_list)
+        for i in range(0, len(result_list)):
+            print("课程ID:%s 课程名:%s 学分:%d" % (result_list[i]['course_id'], result_list[i]['course_name']
+                                            , result_list[i]['credits']))
         return redirect('/pro/teacher/')
     else:
         print("用户身份不合法")
@@ -59,7 +63,10 @@ def indexTGrade(request):
         for r in result:
             result_list.append({"student_id":r[0],'student_name':r[1],'course_id':r[2],\
                                 'course_name':r[3],'credits':r[4],'grade':r[5]})
-        print(result_list)
+        for i in range(0,len(result_list)):
+            print("学生ID:%s 学生姓名:%s 课程ID:%s 课程名:%s 学分:%d 成绩：%d" % (result_list[i]['student_id'], result_list[i]['student_name']
+            , result_list[i]['course_id'], result_list[i]['course_name'], result_list[i]['credits'],result_list[i]['grade']))
+
         return redirect('/pro/teacher/')
     else:
         print("用户身份不合法")
