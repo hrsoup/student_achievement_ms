@@ -3,17 +3,8 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.db import connection
 
-def admin1(request): #个人信息
-    return render(request,'admin1.html')
-
-def admin2(request): #学生信息
-    return render(request,'admin2.html')
-    
-def admin3(request): #教师信息
-    return render(request,'admin3.html')
-
-def admin4(request): #课程信息
-    return render(request,'admin4.html')
+def admin(request): #个人信息
+    return render(request,'admin.html')
 
 def indexAdmin(request):
     print("查询管理员个人信息")
@@ -28,7 +19,7 @@ def indexAdmin(request):
         for r in result:
             result_list.append({"admin_id":r[0],'admin_name':r[2]})
         print(result_list)
-        return redirect('/pro/admin1')
+        return redirect('/pro/admin/')
     else:
         print("用户身份不合法")
         return redirect('/pro/login/')
@@ -48,7 +39,7 @@ def indexAllStu(request):
             result_list.append({"student_id":r[0],'password':r[1],'student_name':r[2],\
                                 'dept':r[3],'major':r[4],'class_id':r[5]})
         print(result_list)
-        return redirect('/pro/admin1')
+        return redirect('/pro/admin/')
     else:
         print("用户身份不合法")
         return redirect('/pro/login/')
@@ -66,7 +57,7 @@ def indexAllTeacher(request):
         for r in result:
             result_list.append({"teacher_id":r[0],"password":r[1],'teacher_name':r[2],'dept':r[3]})
         print(result_list)
-        return redirect('/pro/admin1')
+        return redirect('/pro/admin/')
     else:
         print("用户身份不合法")
         return redirect('/pro/login/')
@@ -84,7 +75,7 @@ def indexAllCourse(request):
         for r in result:
             result_list.append({"course_id":r[0],'course_name':r[1],'credits':r[2]})
         print(result_list)
-        return redirect('/pro/admin1')
+        return redirect('/pro/admin/')
     else:
         print("用户身份不合法")
         return redirect('/pro/login/')

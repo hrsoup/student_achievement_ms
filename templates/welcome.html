@@ -8,9 +8,9 @@
       margin:0px;
       padding:0px;
       font-family:sans-serif;
-      background: url(bs3.jpg);
       background-size:cover;
       }
+
      .mainblock{
       position:relative;
       top:350px;
@@ -23,58 +23,44 @@
       box-shadow: 0px 15px 25px rgba(0,0,0,.5);
       border-radius:15px;
       }
-        .title{
+     .title{
         text-align:center;
         font-size:36px;
         color:white;
-        }
-        .enter{
+     }
+     .enter{
         position:absolute;
-         margin-top:-20px;
-         margin-left:320px;
-        }
+        margin-top:-20px;
+        margin-left:320px;
+     }
 
-        .enter input
-        {
-        position:absolute;
-        width:200px;
-        height:50px;
-        font-size:16px;
-        border:none;
-        outline:none;
-        color:#fff;
-        background: #03a9f4;
-        padding:15px 20px;
-        cursor: pointer;
-        border-radius:30px;
-        }
-
-        .background {
-        display: block;
-        position: fixed;
-        right: 0;
-        bottom: 0;
-        width: auto;
-        height: auto;
-        min-width: 100%;
-        min-height: 100%;
-        z-index: -100;
-        background: transparent url(pictures/background.jpg) no-repeat;
-        background-size: cover;
-        }
+     .background {
+       display: block;
+       position: fixed;
+       right: 0;
+       bottom: 0;
+       width: auto;
+       height: auto;
+       min-width: 100%;
+       min-height: 100%;
+       z-index: -100;
+       background: url(./background.jpg) no-repeat;
+       background-size: cover;
+      }
     </style>
+
 </head>
 <body>
     <div class="mainblock">
-    <div class="title">
-      <h1>
+      <div class="title">
+        <h1>
           学生成绩管理系统
-      </h1>
-    </div>
-    <div class="enter">
+        </h1>
+      </div>
+        <div class="enter">
           <input type="button" value="进入系统"
                onclick="location.href='/pro/login'"/>
-    </div>
+        </div>
     </div>
     <div class="background">
     </div>
