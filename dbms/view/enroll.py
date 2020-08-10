@@ -82,4 +82,8 @@ def login(request):
         return render(request,'login.html')
 
 def logout(request):#退出登录
-    return render(request, 'login.html')
+    obj = render(request, 'login.html')
+    if 'sessionid' in request.COOKIES:
+        request.session.flush()
+        obj.delete_cookie('sessionid')
+    return obj
