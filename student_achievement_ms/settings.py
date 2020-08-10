@@ -123,7 +123,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/static/'#存储本地图片静态目录添加
+STATICFILES_DIRS=[
+    os.path.join(BASE_DIR,'static')
+]
+
 
 #session配置
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
