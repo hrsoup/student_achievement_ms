@@ -36,7 +36,7 @@ def login(request):
                 #新创建一个session，设置该session的属性
                 request.session['role'] = 'student' #用户类型
                 request.session['id'] = result[0][0]    #用户唯一标识
-                obj = redirect('/pro/student1')
+                obj = redirect('/pro/student')
                 return obj
 
         elif usertype == 'teacher':#教师登录的情况
@@ -56,7 +56,7 @@ def login(request):
                 request.session.flush()
                 request.session['role']='teacher'
                 request.session['id'] = result[0][0]
-                obj = redirect('/pro/teacher1')
+                obj = redirect('/pro/teacher')
                 return obj
 
         else:#管理员登录的情况
@@ -76,7 +76,7 @@ def login(request):
                 request.session.flush()
                 request.session['role']='admin'
                 request.session['id'] = result[0][0]
-                obj = redirect('/pro/admin1')
+                obj = redirect('/pro/admin')
                 return obj
     else:
         return render(request,'login.html')
