@@ -3,6 +3,7 @@ from .view import add, admin, enroll, stat, student, teacher
 urlpatterns = [
     path('welcome/',enroll.welcome),
     path('login/', enroll.login),
+    path('logout/', enroll.logout),
     path('admin/',admin.admin),
     path('student/',student.student),
     path('teacher/',teacher.teacher),
@@ -18,4 +19,5 @@ urlpatterns = [
     path('indexAllStu',admin.indexAllStu),
     path('indexAllTeacher',admin.indexAllTeacher),
     path('indexAllCourse',admin.indexAllCourse),
+
 ]

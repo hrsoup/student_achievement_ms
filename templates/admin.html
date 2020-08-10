@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
 <head>
     <meta charset="UTF-8">
-    <title>个人信息</title>
+    <title>管理员界面</title>
      <style>
       body{
        margin:0px;
@@ -112,16 +113,16 @@
       </h1>
     </div>
     <div class="selectbar">
-        <input type="button" name="stu_info" value="个人信息"
+        <input type="button" name="admin_info" value="个人信息"
         onclick="location.href='/pro/indexAdmin'"><br><br><br><br>
-        <input type="button" name="stu_course" value="学生信息"
+        <input type="button" name="stu_info" value="学生信息"
         onclick="location.href='/pro/indexAllStu'"><br><br><br><br>
-        <input type="button" name="stu_grade" value="教师信息"
+        <input type="button" name="tea_info" value="教师信息"
         onclick="location.href='/pro/indexAllTeacher'"><br><br><br><br>
-        <input type="button" name="stu_grade" value="课程信息"
+        <input type="button" name="course_info" value="课程信息"
         onclick="location.href='/pro/indexAllCourse'"><br><br><br><br>
         <input type="button" name="login_off" value="退出系统"
-               onclick="" />
+               onclick="location.href='/pro/logout'"><br><br><br><br>
     </div>
     <div class="tableblock">
         <table height="50px" width="1317px" border="5">
