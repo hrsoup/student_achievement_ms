@@ -71,7 +71,7 @@
           border-radius:15px;
       }
 
-      .tableblock{
+      .picblock{
        position:absolute;
        top:365px;
        left:880px;
@@ -81,6 +81,32 @@
        background: rgba(35,235,185,.8);
        box-sizing:border-box;
        box-shadow: 0px 15px 25px rgba(0,0,0,.5);
+      }
+
+      .picblock1{
+       position:absolute;
+       top:365px;
+       left:560px;
+       width:620px;
+       height:465px;
+       transform:translate(-50%,-50%);
+       background: rgba(35,185,235,.8);
+       box-sizing:border-box;
+       box-shadow: 0px 15px 25px rgba(0,0,0,.5);
+       background-image:url({% static bar %});
+      }
+
+      .picblock2{
+       position:absolute;
+       top:365px;
+       left:1200px;
+       width:620px;
+       height:465px;
+       transform:translate(-50%,-50%);
+       background: rgba(35,85,35,.8);
+       box-sizing:border-box;
+       box-shadow: 0px 15px 25px rgba(0,0,0,.5);
+       background-image:url({% static pie %});
       }
 
       .background {
@@ -96,6 +122,7 @@
        background-image:url({% static 'images/background.jpg' %});
        background-size: cover;
       }
+
     </style>
     <script>
     </script>
@@ -113,12 +140,16 @@
     </div>
     <div class="selectbar">
         <input type="button" name="stu_info" value="个人信息" onclick="location.href='/pro/indexStudent'"><br><br><br><br>
-        <input type="button" name="stu_info" value="所选课程" onclick="location.href='/pro/indexSCourse'"><br><br><br><br>
-        <input type="button" name="stu_info" value="个人成绩" onclick="location.href='/pro/indexSGPA'"><br><br><br><br>
-        <input type="button" name="stu_info" value="成绩分布" onclick="location.href='/pro/indexSGPADIST'"><br><br><br><br>
+        <input type="button" name="stu_course" value="所选课程" onclick="location.href='/pro/indexSCourse'"><br><br><br><br>
+        <input type="button" name="stu_grade" value="个人成绩" onclick="location.href='/pro/indexSGPA'"><br><br><br><br>
+        <input type="button" name="stu_gradedist" value="成绩分布" onclick="location.href='/pro/indexSGPADIST'"><br><br><br><br>
         <input type="button" name="login_off" value="退出系统" onclick="location.href='/pro/logout'"><br><br><br><br>
     </div>
-    <div class="tableblock">
+    <div class="picblock">
+    </div>
+    <div class="picblock1">
+    </div>
+    <div class="picblock2">
     </div>
     <div class="background">
     </div>

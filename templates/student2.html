@@ -81,6 +81,8 @@
        background: rgba(35,235,185,.8);
        box-sizing:border-box;
        box-shadow: 0px 15px 25px rgba(0,0,0,.5);
+       text-align:center;
+       display:table;
       }
 
       .background {
@@ -113,17 +115,26 @@
     </div>
     <div class="selectbar">
         <input type="button" name="stu_info" value="个人信息" onclick="location.href='/pro/indexStudent'"><br><br><br><br>
-        <input type="button" name="stu_info" value="所选课程" onclick="location.href='/pro/indexSCourse'"><br><br><br><br>
-        <input type="button" name="stu_info" value="个人成绩" onclick="location.href='/pro/indexSGPA'"><br><br><br><br>
-        <input type="button" name="stu_info" value="成绩分布" onclick="location.href='/pro/indexSGPADIST'"><br><br><br><br>
+        <input type="button" name="stu_course" value="所选课程" onclick="location.href='/pro/indexSCourse'"><br><br><br><br>
+        <input type="button" name="stu_grade" value="个人成绩" onclick="location.href='/pro/indexSGPA'"><br><br><br><br>
+        <input type="button" name="stu_gradedist" value="成绩分布" onclick="location.href='/pro/indexSGPADIST'"><br><br><br><br>
         <input type="button" name="login_off" value="退出系统" onclick="location.href='/pro/logout'"><br><br><br><br>
     </div>
     <div class="tableblock">
-        <table  id="stu_course" height="40px" width="1320px" border="5" style="display:table">
-        <tr>
+        <table  id="stu_course" height="40px" width="1320px" border="5">
+            <tr>
             <th>课程ID</th>
             <th>课程名</th>
             <th>学分</th>
+        </tr>
+        <tr>
+            {%for temp in data%}
+            <tr>
+            <td>{{temp.course_id}}</td>
+            <td>{{temp.course_name}}</td>
+            <td>{{temp.credits}}</td>
+            </tr>
+            {% endfor %}
         </tr>
         </table>
     </div>

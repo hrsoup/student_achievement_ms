@@ -82,6 +82,8 @@
        background: rgba(35,235,185,.8);
        box-sizing:border-box;
        box-shadow: 0px 15px 25px rgba(0,0,0,.5);
+       display:table;
+       text-align:center;
       }
 
      .background {
@@ -125,6 +127,12 @@
             <th>管理员ID</th>
             <th>姓名</th>
         </tr>
+            {%for temp in data%}
+            <tr>
+            <td>{{temp.admin_id}}</td>
+            <td>{{temp.admin_name}}</td>
+            </tr>
+            {% endfor %}
         </table>
     </div>
 

@@ -9,13 +9,13 @@ import os
 import re
 
 plt.rcParams['font.sans-serif']=['SimHei']  #能显示中文标签
-
 #某个学生所有课程成绩分布的统计函数，成绩段：0-59、60-69、70-79、80-89、90-100
 def indexSGPADIST(request):
     print("查询成绩分布")
     if 'sessionid' in request.COOKIES and request.session['role'] == 'student':
+        studentId = request.session['id']
         #首先先将之前该学生对应的统计图片删掉
-        picreg = "^[^_]*_" + str(request.session['id']) + "\.jpg$"
+        picreg = "^[^_]*_" + studentId + "\.jpg$"
         for pic in os.listdir("static/student_stat_img/"):
             if re.match(picreg, pic) != None:
                 os.remove("static/student_stat_img/" + pic)
@@ -24,7 +24,7 @@ def indexSGPADIST(request):
         cursor.execute("select grade,count(grade) as counts\
                         from take\
                         where student_id=%s\
-                        group by grade;",[request.session['id']])   #根据具体学生id查询成绩分布
+                        group by grade;",[studentId])   #根据具体学生id查询成绩分布
         result_list=[]
         result = cursor.fetchone()
         tmp=('grade','counts')
@@ -49,9 +49,12 @@ def indexSGPADIST(request):
             else:
                 num_list[4] += result_list[i]['counts']
         #柱状图
+        plt.title('成绩分布直方图')
+        plt.xlabel('分数段')
+        plt.ylabel('计数')
         plt.yticks(list(range(max(num_list) + 1)))
         plt.bar(range(len(num_list)), num_list, color=color_list, tick_label=label_list)
-        plt.savefig("static/student_stat_img/bar_" + str(request.session['id']) + ".jpg")  #图片拿学生id作为标识
+        plt.savefig("static/student_stat_img/bar_" + studentId + ".jpg")  #图片拿学生id作为标识
         plt.close()
         #饼图
         #获得个数非0的成绩段（以及相应的label_list和color_list）
@@ -61,11 +64,17 @@ def indexSGPADIST(request):
                 pie_num_list.append(num_list[i])
                 pie_label_list.append(label_list[i])
                 pie_color_list.append(color_list[i])
+        plt.title('成绩分布饼状图')
         plt.pie(pie_num_list, labels=pie_label_list, colors=pie_color_list, autopct='%1.2f%%', textprops={'fontsize':12,'color':'black'})
         plt.axis('equal')
-        plt.savefig("static/student_stat_img/pie_" + str(request.session['id']) + ".jpg")  #图片拿学生id作为标识
+        plt.savefig("static/student_stat_img/pie_" + studentId + ".jpg")#图片拿学生id作为标识
         plt.close()
-        return render(request, 'student4.html')
+        #将具体数据和图片所在路径包装成一个字典返回给前端
+        data = {}
+        data["data"] = result_list
+        data["bar"] = "student_stat_img/bar_" + studentId + ".jpg"
+        data["pie"] = "student_stat_img/pie_" + studentId + ".jpg"
+        return render(request, 'student4.html', data)
     else:
         print("用户身份不合法")
         return redirect('/pro/login/')
