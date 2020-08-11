@@ -21,7 +21,7 @@ def indexSGPADIST(request):
             result = cursor.fetchone()
         for i in range(0, len(result_list)):
             print("取得成绩:%d 对应次数:%d" % (result_list[i]['grade'], result_list[i]['counts']))
-        return redirect('/pro/student/')
+        return render(request,'student4.html')
     else:
         print("用户身份不合法")
         return redirect('/pro/login/')
@@ -29,3 +29,4 @@ def indexSGPADIST(request):
 #教师成绩分布的统计函数
 def indexTDist(request):
     print("查询学生成绩分布")
+    return render(request, 'teacher4.html')

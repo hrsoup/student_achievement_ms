@@ -1,7 +1,7 @@
 #管理员子系统
 from django.shortcuts import render,redirect
-from django.http import HttpResponse
 from django.db import connection
+from django.http import HttpResponse
 
 def admin(request): #个人信息
     return render(request,'admin.html')
@@ -21,7 +21,7 @@ def indexAdmin(request):
 
         for i in range(0,len(result_list)):
             print("管理员ID:%s 姓名:%s" % (result_list[i]['admin_id'], result_list[i]['admin_name']))
-        return redirect('/pro/admin/')
+        return render(request,'admin1.html')
     else:
         print("用户身份不合法")
         return redirect('/pro/login/')
@@ -43,7 +43,7 @@ def indexAllStu(request):
         for i in range(0, len(result_list)):
             print("学生ID:%s 登录密码:%s 姓名:%s 所在学院:%s 所在专业:%s 所在班级:%s" % (result_list[i]['student_id'], result_list[i]['password']
            ,result_list[i]['student_name'], result_list[i]['dept'],result_list[i]['major'],result_list[i]['class_id']))
-        return redirect('/pro/admin/')
+        return render(request, 'admin2.html')
     else:
         print("用户身份不合法")
         return redirect('/pro/login/')
@@ -61,9 +61,9 @@ def indexAllTeacher(request):
         for r in result:
             result_list.append({"teacher_id":r[0],"password":r[1],'teacher_name':r[2],'dept':r[3]})
         for i in range(0, len(result_list)):
-            print("教师ID:%s 登录密码:%s 姓名:%s 院系:%s" % (result_list[i]['teacher_id'], result_list[i]['password']
+            print("教师ID:%s 登录密码:%s 姓名:%s 所在学院:%s" % (result_list[i]['teacher_id'], result_list[i]['password']
                                             , result_list[i]['teacher_name'],result_list[i]['dept']))
-        return redirect('/pro/admin/')
+        return render(request,'admin3.html')
     else:
         print("用户身份不合法")
         return redirect('/pro/login/')
@@ -83,7 +83,7 @@ def indexAllCourse(request):
         for i in range(0, len(result_list)):
             print("课程ID:%s 课程名:%s 学分:%d" % (result_list[i]['course_id'], result_list[i]['course_name']
                                             , result_list[i]['credits']))
-        return redirect('/pro/admin/')
+        return render(request,'admin4.html')
     else:
         print("用户身份不合法")
         return redirect('/pro/login/')

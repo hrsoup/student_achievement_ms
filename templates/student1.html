@@ -3,7 +3,7 @@
 {% load static %}
 <head>
     <meta charset="UTF-8">
-    <title>管理员模式</title>
+    <title>个人信息</title>
      <style>
       body{
        margin:0px;
@@ -11,7 +11,6 @@
        font-family:sans-serif;
        background-size:cover;
       }
-
      .header{
        position:absolute;
        top:30px;
@@ -84,7 +83,7 @@
        box-shadow: 0px 15px 25px rgba(0,0,0,.5);
       }
 
-     .background {
+      .background {
        display: block;
        position: fixed;
        right: 0;
@@ -99,6 +98,7 @@
       }
     </style>
     <script>
+
     </script>
 </head>
 <body>
@@ -109,19 +109,27 @@
     </div>
     <div class="footer">
       <h1>
-          学生成绩管理系统（管理员登录）
+          学生成绩管理系统（学生登录）
       </h1>
     </div>
     <div class="selectbar">
-        <input type="button" name="admin_info" value="个人信息" onclick="location.href='/pro/indexAdmin'"><br><br><br><br>
-        <input type="button" name="stu_info" value="学生信息" onclick="location.href='/pro/indexAllStu'"><br><br><br><br>
-        <input type="button" name="tea_info" value="教师信息" onclick="location.href='/pro/indexAllTeacher'"><br><br><br><br>
-        <input type="button" name="course_info" value="课程信息" onclick="location.href='/pro/indexAllCourse'"><br><br><br><br>
+        <input type="button" name="stu_info" value="个人信息" onclick="location.href='/pro/indexStudent'"><br><br><br><br>
+        <input type="button" name="stu_info" value="所选课程" onclick="location.href='/pro/indexSCourse'"><br><br><br><br>
+        <input type="button" name="stu_info" value="个人成绩" onclick="location.href='/pro/indexSGPA'"><br><br><br><br>
+        <input type="button" name="stu_info" value="成绩分布" onclick="location.href='/pro/indexSGPADIST'"><br><br><br><br>
         <input type="button" name="login_off" value="退出系统" onclick="location.href='/pro/logout'"><br><br><br><br>
     </div>
     <div class="tableblock">
+        <table  id="stu_info" height="40px" width="1320px" border="5" style="display:table">
+        <tr>
+            <th>学生ID</th>
+            <th>姓名</th>
+            <th>所在学院</th>
+            <th>所在专业</th>
+            <th>所在班级</th>
+        </tr>
+        </table>
     </div>
-
     <div class="background">
     </div>
 </body>

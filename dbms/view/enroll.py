@@ -28,10 +28,10 @@ def login(request):
                     request.session.flush() #清除一下对应的session
                     obj = render(request,'login.html',status=400)
                     obj.delete_cookie('sessionid')
-                print("用户名或密码有问题，登录失败")
+                print("登录失败，用户名或密码有问题")
                 return obj
             else:
-                print("登录成功")
+                print("登录成功 身份:学生")
                 request.session.flush() #清除一下之前的session
                 #新创建一个session，设置该session的属性
                 request.session['role'] = 'student' #用户类型
@@ -49,10 +49,10 @@ def login(request):
                     request.session.flush()
                     obj = render(request,'login.html',status=400)
                     obj.delete_cookie('sessionid')
-                print("用户名或密码有问题，登录失败")
+                print("登录失败，用户名或密码有问题")
                 return obj
             else:
-                print("登录成功")
+                print("登录成功 身份:教师")
                 request.session.flush()
                 request.session['role']='teacher'
                 request.session['id'] = result[0][0]
@@ -69,10 +69,10 @@ def login(request):
                     request.session.flush()
                     obj = render(request,'login.html',status=400)
                     obj.delete_cookie('sessionid')
-                print("用户名或密码有问题，登录失败")
+                print("登录失败，用户名或密码有问题")
                 return obj
             else:
-                print("登录成功")
+                print("登录成功 身份:管理员")
                 request.session.flush()
                 request.session['role']='admin'
                 request.session['id'] = result[0][0]
@@ -86,4 +86,5 @@ def logout(request):#退出登录
     if 'sessionid' in request.COOKIES:
         request.session.flush()
         obj.delete_cookie('sessionid')
+    print("成功退出系统，需进入请重新登录")
     return obj
