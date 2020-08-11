@@ -18,10 +18,9 @@ def indexAdmin(request):
         result_list = []
         for r in result:
             result_list.append({"admin_id":r[0],'admin_name':r[2]})
-
         for i in range(0,len(result_list)):
             print("管理员ID:%s 姓名:%s" % (result_list[i]['admin_id'], result_list[i]['admin_name']))
-        return render(request,'admin1.html')
+        return render(request, 'admin1.html', {"data": result_list})
     else:
         print("用户身份不合法")
         return redirect('/pro/login/')
@@ -43,7 +42,7 @@ def indexAllStu(request):
         for i in range(0, len(result_list)):
             print("学生ID:%s 登录密码:%s 姓名:%s 所在学院:%s 所在专业:%s 所在班级:%s" % (result_list[i]['student_id'], result_list[i]['password']
            ,result_list[i]['student_name'], result_list[i]['dept'],result_list[i]['major'],result_list[i]['class_id']))
-        return render(request, 'admin2.html')
+        return render(request, 'admin2.html', {"data": result_list})
     else:
         print("用户身份不合法")
         return redirect('/pro/login/')
@@ -63,7 +62,7 @@ def indexAllTeacher(request):
         for i in range(0, len(result_list)):
             print("教师ID:%s 登录密码:%s 姓名:%s 所在学院:%s" % (result_list[i]['teacher_id'], result_list[i]['password']
                                             , result_list[i]['teacher_name'],result_list[i]['dept']))
-        return render(request,'admin3.html')
+        return render(request, 'admin3.html', {"data": result_list})
     else:
         print("用户身份不合法")
         return redirect('/pro/login/')
@@ -83,7 +82,7 @@ def indexAllCourse(request):
         for i in range(0, len(result_list)):
             print("课程ID:%s 课程名:%s 学分:%d" % (result_list[i]['course_id'], result_list[i]['course_name']
                                             , result_list[i]['credits']))
-        return render(request,'admin4.html')
+        return render(request, 'admin4.html', {"data": result_list})
     else:
         print("用户身份不合法")
         return redirect('/pro/login/')

@@ -21,7 +21,7 @@ def indexTeacher(request):
         for i in range(0, len(result_list)):
             print("教师id:%s 姓名:%s 所在学院:%s " % (result_list[i]['teacher_id'], result_list[i]['teacher_name']
                                                            , result_list[i]['dept']))
-        return render(request,'teacher1.html')
+        return render(request, 'teacher1.html', {"data": result_list})
     else:
         print("用户身份不合法")
         return redirect('/pro/login/')
@@ -43,7 +43,7 @@ def indexTCourse(request):
         for i in range(0, len(result_list)):
             print("课程ID:%s 课程名:%s 学分:%d" % (result_list[i]['course_id'], result_list[i]['course_name']
                                             , result_list[i]['credits']))
-        return render(request,'teacher2.html')
+        return render(request, 'teacher2.html', {"data": result_list})
     else:
         print("用户身份不合法")
         return redirect('/pro/login/')
@@ -66,8 +66,7 @@ def indexTGrade(request):
         for i in range(0,len(result_list)):
             print("学生ID:%s 学生姓名:%s 课程ID:%s 课程名:%s 学分:%d 成绩：%d" % (result_list[i]['student_id'], result_list[i]['student_name']
             , result_list[i]['course_id'], result_list[i]['course_name'], result_list[i]['credits'],result_list[i]['grade']))
-
-        return render(request,'teacher3.html')
+        return render(request, 'teacher3.html', {"data": result_list})
     else:
         print("用户身份不合法")
         return redirect('/pro/login/')
