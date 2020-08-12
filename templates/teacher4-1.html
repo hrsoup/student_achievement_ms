@@ -3,7 +3,7 @@
 {% load static %}
 <head>
     <meta charset="UTF-8">
-    <title>教师模式</title>
+    <title>学生成绩分布</title>
      <style>
       body{
        margin:0px;
@@ -84,6 +84,34 @@
        box-shadow: 0px 15px 25px rgba(0,0,0,.5);
       }
 
+
+
+      .selectbox{
+       position:absolute;
+       top:365px;
+       left:360px;
+       width:280px;
+       height:565px;
+       transform:translate(-50%,-50%);
+       background: rgba(35,185,235,.8);
+       box-sizing:border-box;
+       box-shadow: 0px 15px 25px rgba(0,0,0,.5);
+      }
+
+       .selectbox select{
+       width:280px;
+       height:40px;
+       font-size:16px;
+       color:#03a9f4;
+      }
+
+      .selectbox h1{
+       font-size:16px;
+       color:black;
+       text-align:center
+      }
+
+
       .background {
        display: block;
        position: fixed;
@@ -112,15 +140,23 @@
           学生成绩管理系统（教师登录）
       </h1>
     </div>
-    <div class="selectbar">
-        <input type="button" name="stu_info" value="个人信息" onclick="location.href='/pro/indexTeacher'"><br><br><br><br>
-        <input type="button" name="stu_course" value="所授课程" onclick="location.href='/pro/indexTCourse'"><br><br><br><br>
+      <div class="selectbar">
+        <input type="button" name="tea_info" value="个人信息" onclick="location.href='/pro/indexTeacher'"><br><br><br><br>
+        <input type="button" name="tea_course" value="所授课程" onclick="location.href='/pro/indexTCourse'"><br><br><br><br>
         <input type="button" name="stu_grade" value="学生成绩" onclick="location.href='/pro/indexTGrade'"><br><br><br><br>
-        <input type="button" name="stu_grade" value="成绩分布" onclick="location.href='/pro/indexTDistSelect'"><br><br><br><br>
-        <input type="button" name="login_off" value="退出系统" onclick="location.href='/pro/logout'"><br><br><br><br>
+        <input type="button" name="stu_gradedist" value="成绩分布" onclick="location.href='/pro/indexTDist'"><br><br><br><br>
+        <input type="button" name="login_off" value="退出系统" onclick="location.href='/pro/logout'"><br><br><br><br> >
     </div>
     <div class="tableblock">
     </div>
+     <div class="selectbox">
+          <h1 name="title">请选择需要查询的课程</h1>
+          <select name="my_select">
+                   {%for temp in data%}
+                   <option value ={{temp.course_name}}>{{temp.course_name}}</option>
+                   {% endfor %}
+               </select>
+     </div>
     <div class="background">
     </div>
 </body>

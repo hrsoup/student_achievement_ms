@@ -80,6 +80,26 @@ def indexSGPADIST(request):
         return redirect('/pro/login/')
 
 #教师成绩分布的统计函数
-def indexTDist(request):
-    print("查询学生成绩分布")
-    return render(request, 'teacher4.html')
+def indexTDistSelect(request):#获取下拉框
+    print("查询教师教授的课程")
+    if 'sessionid' in request.COOKIES and request.session['role'] == 'teacher':
+        teacher_id = request.session['id']
+        connection.connect()
+        cursor = connection.cursor()
+        cursor.execute("select course.course_id,course_name,credits \
+                        from course natural join teach \
+                        where teacher_id='%s'" % (teacher_id))
+        result = cursor.fetchall()
+        connection.close()
+        result_list = []
+        for r in result:
+            result_list.append({"course_id":r[0],'course_name':r[1],'credits':r[2]})
+        for i in range(0, len(result_list)):
+            print("课程ID:%s 课程名:%s" % (result_list[i]['course_id'], result_list[i]['course_name']))
+        return render(request, 'teacher4-1.html', {"data": result_list})
+    else:
+        print("用户身份不合法")
+        return redirect('/pro/login/')
+
+def indexTDistShow(request):#获取下拉框和成绩统计分布的对应图片
+    return render(request, 'teacher4-2.html')
