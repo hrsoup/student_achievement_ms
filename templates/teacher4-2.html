@@ -176,11 +176,13 @@
     </div>
      <div class="selectbox">
           <h1 name="title">请选择需要查询的课程</h1>
-          <select name="my_select">
+           <form name="my_form" action="/pro/indexTDistShow/" method="post">
+            <select name="my_select" >
                    {%for temp in data%}
                    <option value ={{temp.course_name}}>{{temp.course_name}}</option>
                    {% endfor %}
-               </select>
+            </select>
+          </form>
      </div>
     <div class="picblock1">
     </div>
