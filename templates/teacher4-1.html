@@ -86,32 +86,6 @@
 
 
 
-      .selectbox{
-       position:absolute;
-       top:365px;
-       left:360px;
-       width:280px;
-       height:565px;
-       transform:translate(-50%,-50%);
-       background: rgba(35,185,235,.8);
-       box-sizing:border-box;
-       box-shadow: 0px 15px 25px rgba(0,0,0,.5);
-      }
-
-       .selectbox select{
-       width:280px;
-       height:40px;
-       font-size:16px;
-       color:#03a9f4;
-      }
-
-      .selectbox h1{
-       font-size:16px;
-       color:black;
-       text-align:center
-      }
-
-
       .background {
        display: block;
        position: fixed;
@@ -125,6 +99,91 @@
        background-image:url({% static 'images/background.jpg' %});
        background-size: cover;
       }
+
+      .mainblock{
+     position:absolute;
+     top:365px;
+     left:360px;
+     width:280px;
+     height:565px;
+     transform:translate(-50%,-50%);
+     width:272px;
+     height:560px;
+     padding:50px;
+     background: rgba(12,12,12,.8);
+     box-sizing:border-box;
+     box-shadow: 0px 15px 25px rgba(0,0,0,.5);
+ }
+ .mainblock h2{
+     margin:0 0 30px;
+     padding:0;
+     color: #fff;
+     text-align:center;
+     font-size:15px
+ }
+ .mainblock .inputbox{
+     position:relative;
+ }
+ .mainblock .inputbox input{
+     width: 100%;
+     padding:10px 0;
+     font-size:16px;
+     color:#fff;
+     letter-spacing: 1px;
+     margin-bottom: 30px;
+     border:none;
+     border-bottom: 1px solid #fff;
+     outline:none;
+     background: transparent;
+ }
+ .mainblock .inputbox label{
+     position:absolute;
+     top:0px;
+     left:0px;
+     padding:10px 0;
+     font-size: 16px;
+     color:#fff;
+     pointer-events:none;
+     transition:.5s;
+ }
+ .mainblock .inputbox input:focus ~ label,
+ .mainblock .inputbox input:valid ~ label
+ {
+     top:-18px;
+     left:0;
+     color:#03a9f4;
+     font-size:14px;
+ }
+
+ .mainblock .selectbox select
+ {
+     width: 200px;
+     position:absolute;
+     top:100px;
+     left:36px;
+     padding:10px 0;
+     font-size:16px;
+     color:#03a9f4;
+     margin-bottom: 100px;
+     background: transparent;
+ }
+
+ .mainblock .submit input
+ {
+     width:160px;
+     height:40px;
+     position:absolute;
+     top:200px;
+     left:50px;
+     font-size:15px;
+     border:none;
+     outline:none;
+     color:#fff;
+     background:red;
+     padding:15px 20px;
+     cursor: pointer;
+     border-radius:30px;
+ }
     </style>
     <script>
     </script>
@@ -150,14 +209,22 @@
     <div class="tableblock">
     </div>
      <div class="selectbox">
-          <h1 name="title">请选择需要查询的课程</h1>
-          <form name="my_form" action="/pro/indexTDistSelect/" method="post">
-            <select name="my_select" >
-                   {%for temp in data%}
-                   <option value ={{temp.course_name}}>{{temp.course_name}}</option>
+         <div class="mainblock">
+         <h2>请选择需要查询的课程</h2>
+         <form name="my_form" action="/pro/indexTDistShow/" method="post">
+             {% csrf_token %}
+             <div class="selectbox">
+               <select name="my_select">
+                   {% for temp in data%}
+                   <option value ="{{temp.data}}">{{temp.course_name}}</option>
                    {% endfor %}
-            </select>
-          </form>
+               </select>
+             </div>
+             <div class="submit">
+               <input type="submit" name="" value="查询" >
+             </div>
+         </form>
+     </div>
      </div>
     <div class="background">
     </div>

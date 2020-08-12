@@ -23,10 +23,10 @@ def login(request):
             result = cursor.fetchall()
             connection.close()
             if len(result) == 0:
-                obj = render(request,'login.html',status=400)
+                obj = render(request,'login_fail.html',status=400)
                 if 'sessionid' in request.COOKIES:  #登陆失败时，如果cookie中有sessionid，就把它清除掉
                     request.session.flush() #清除一下对应的session
-                    obj = render(request,'login.html',status=400)
+                    obj = render(request,'login_fail.html',status=400)
                     obj.delete_cookie('sessionid')
                 print("登录失败，用户名或密码有问题")
                 return obj
@@ -35,7 +35,7 @@ def login(request):
                 request.session.flush() #清除一下之前的session
                 #新创建一个session，设置该session的属性
                 request.session['role'] = 'student' #用户类型
-                request.session['id'] = result[0][0]    #用户唯一标识
+                request.session['id'] = result[0][0]#用户唯一标识
                 obj = redirect('/pro/student')
                 return obj
 
@@ -44,10 +44,10 @@ def login(request):
             result = cursor.fetchall()
             connection.close()
             if len(result) == 0:
-                obj = render(request,'login.html',status=400)
+                obj = render(request,'login_fail.html',status=400)
                 if 'sessionid' in request.COOKIES:
                     request.session.flush()
-                    obj = render(request,'login.html',status=400)
+                    obj = render(request,'login_fail.html',status=400)
                     obj.delete_cookie('sessionid')
                 print("登录失败，用户名或密码有问题")
                 return obj
@@ -64,10 +64,10 @@ def login(request):
             result = cursor.fetchall()
             connection.close()
             if len(result) == 0:
-                obj = render(request,'login.html',status=400)
+                obj = render(request,'login_fail.html',status=400)
                 if 'sessionid' in request.COOKIES:
                     request.session.flush()
-                    obj = render(request,'login.html',status=400)
+                    obj = render(request,'login_fail.html',status=400)
                     obj.delete_cookie('sessionid')
                 print("登录失败，用户名或密码有问题")
                 return obj
