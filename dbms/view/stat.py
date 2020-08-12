@@ -21,6 +21,13 @@ def indexSGPADIST(request):
                 os.remove("static/student_stat_img/" + pic)
         connection.connect()
         cursor = connection.cursor()
+        #获取学生名字
+        cursor.execute("select student_name\
+                        from student\
+                        where student_id=%s;",[request.session['id']])
+        result = cursor.fetchone()
+        student_name = result[0]
+        #查询学生成绩分布
         cursor.execute("select grade,count(grade) as counts\
                         from take\
                         where student_id=%s\
@@ -49,7 +56,7 @@ def indexSGPADIST(request):
             else:
                 num_list[4] += result_list[i]['counts']
         #柱状图
-        plt.title('成绩分布直方图')
+        plt.title('直方图')
         plt.xlabel('分数段')
         plt.ylabel('计数')
         plt.yticks(list(range(max(num_list) + 1)))
@@ -64,7 +71,7 @@ def indexSGPADIST(request):
                 pie_num_list.append(num_list[i])
                 pie_label_list.append(label_list[i])
                 pie_color_list.append(color_list[i])
-        plt.title('成绩分布饼状图')
+        plt.title('饼状图')
         plt.pie(pie_num_list, labels=pie_label_list, colors=pie_color_list, autopct='%1.2f%%', textprops={'fontsize':12,'color':'black'})
         plt.axis('equal')
         plt.savefig("static/student_stat_img/pie_" + studentId + ".jpg")#图片拿学生id作为标识
@@ -74,6 +81,7 @@ def indexSGPADIST(request):
         data["data"] = result_list
         data["bar"] = "student_stat_img/bar_" + studentId + ".jpg"
         data["pie"] = "student_stat_img/pie_" + studentId + ".jpg"
+        data["student_name"] = student_name
         return render(request, 'student4.html', data)
     else:
         print("用户身份不合法")
@@ -111,7 +119,7 @@ def indexTDistShow(request):#获取下拉框和成绩统计分布的对应图片
         for pic in os.listdir("static/teacher_stat_img/"):
             if re.match(picreg, pic) != None:
                 os.remove("static/teacher_stat_img/" + pic)
-        #先查询教师教授的所有课程信息
+        #先查询教师教授的所有课程信息，以及该课程id对应的课程名
         connection.connect()
         cursor = connection.cursor()
         cursor.execute("select course.course_id,course_name,credits \
@@ -119,8 +127,11 @@ def indexTDistShow(request):#获取下拉框和成绩统计分布的对应图片
                         where teacher_id='%s'" % (teacher_id))
         result = cursor.fetchall()
         result_list = []
+        course_name = ""
         for r in result:
             result_list.append({"course_id":r[0],'course_name':r[1],'credits':r[2]})
+            if r[0] == course_id:
+                course_name = r[1]
         #查询该课程的学生成绩分布
         cursor.execute("select grade,count(grade) as counts\
                         from take\
@@ -151,7 +162,8 @@ def indexTDistShow(request):#获取下拉框和成绩统计分布的对应图片
             else:
                 num_list[4] += grade_list[i]['counts']
         #柱状图
-        plt.title('成绩分布直方图')
+        plt.figure(figsize=(5,5))
+        plt.title('直方图')
         plt.xlabel('分数段')
         plt.ylabel('计数')
         plt.yticks(list(range(max(num_list) + 1)))
@@ -166,7 +178,8 @@ def indexTDistShow(request):#获取下拉框和成绩统计分布的对应图片
                 pie_num_list.append(num_list[i])
                 pie_label_list.append(label_list[i])
                 pie_color_list.append(color_list[i])
-        plt.title('成绩分布饼状图')
+        plt.figure(figsize=(5.3, 5.3))
+        plt.title('饼状图')
         plt.pie(pie_num_list, labels=pie_label_list, colors=pie_color_list, autopct='%1.2f%%', textprops={'fontsize':12,'color':'black'})
         plt.axis('equal')
         plt.savefig("static/teacher_stat_img/pie_" + teacher_id + '_' + course_id + ".jpg")#图片拿教师id+课程id作为标识
@@ -177,6 +190,7 @@ def indexTDistShow(request):#获取下拉框和成绩统计分布的对应图片
         data["gradeinfo"] = grade_list
         data["bar"] = "teacher_stat_img/bar_" + teacher_id + '_' + course_id + ".jpg"
         data["pie"] = "teacher_stat_img/pie_" + teacher_id + '_' + course_id + ".jpg"
+        data["course_name"] = course_name
         return render(request, 'teacher4-2.html', data)
     else:
         print("用户身份不合法")

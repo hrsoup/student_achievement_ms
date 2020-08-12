@@ -84,7 +84,17 @@
        box-shadow: 0px 15px 25px rgba(0,0,0,.5);
       }
 
+      h3{
+       position:absolute;
+       top:80px;
+       left:860px;
+      }
 
+      h4{
+       position:absolute;
+       top:70px;
+       left:1160px;
+      }
 
       .background {
        display: block;
@@ -187,10 +197,10 @@
 
  .picblock1{
        position:absolute;
-       top:365px;
+       top:385px;
        left:760px;
-       width:460px;
-       height:465px;
+       width:490px;
+       height:490px;
        transform:translate(-50%,-50%);
        background: rgba(35,185,235,.8);;
        box-sizing:border-box;
@@ -198,14 +208,14 @@
        background-image:url({% static bar %});
       }
 
-      .picblock2{
+ .picblock2{
        position:absolute;
-       top:365px;
-       left:1260px;
-       width:460px;
-       height:465px;
+       top:385px;
+       left:1270px;
+       width:490px;
+       height:490px;
        transform:translate(-50%,-50%);
-       background: rgba(35,185,235,.8);;
+       background: rgba(35,185,235,.8);
        box-sizing:border-box;
        box-shadow: 0px 15px 25px rgba(0,0,0,.5);
        background-image:url({% static pie %});
@@ -234,6 +244,7 @@
     </div>
     <div class="tableblock">
     </div>
+
      <div class="selectbox">
          <div class="mainblock">
          <h2>请选择需要查询的课程</h2>
@@ -252,6 +263,9 @@
          </form>
      </div>
      </div>
+      <h3>
+          课程成绩分布情况——{{course_name}}
+      </h3>
     <div class="background">
     </div>
     <div class="picblock1">

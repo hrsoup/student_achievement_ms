@@ -85,10 +85,10 @@
 
       .picblock1{
        position:absolute;
-       top:365px;
+       top:375px;
        left:560px;
        width:620px;
-       height:465px;
+       height:475px;
        transform:translate(-50%,-50%);
        background: rgba(35,185,235,.8);
        box-sizing:border-box;
@@ -98,10 +98,10 @@
 
       .picblock2{
        position:absolute;
-       top:365px;
+       top:375px;
        left:1200px;
        width:620px;
-       height:465px;
+       height:475px;
        transform:translate(-50%,-50%);
        background: rgba(35,85,35,.8);
        box-sizing:border-box;
@@ -121,6 +121,12 @@
        z-index: -100;
        background-image:url({% static 'images/background.jpg' %});
        background-size: cover;
+      }
+
+       h2{
+       position:absolute;
+       top:70px;
+       left:660px;
       }
 
     </style>
@@ -145,12 +151,16 @@
         <input type="button" name="stu_gradedist" value="成绩分布" onclick="location.href='/pro/indexSGPADIST'"><br><br><br><br>
         <input type="button" name="login_off" value="退出系统" onclick="location.href='/pro/logout'"><br><br><br><br>
     </div>
+
     <div class="picblock">
     </div>
     <div class="picblock1">
     </div>
     <div class="picblock2">
     </div>
+       <h2>
+          学生成绩分布情况——{{student_name}}
+      </h2>
     <div class="background">
     </div>
 </body>
