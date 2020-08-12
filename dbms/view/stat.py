@@ -102,4 +102,82 @@ def indexTDistSelect(request):#获取下拉框
         return redirect('/pro/login/')
 
 def indexTDistShow(request):#获取下拉框和成绩统计分布的对应图片
-    return render(request, 'teacher4-2.html')
+    print("查询教师教授的课程以及该课程所有学生的成绩分布")
+    if 'sessionid' in request.COOKIES and request.session['role'] == 'teacher':
+        teacher_id = request.session['id']
+        course_id = request.POST.get('my_select')
+        #首先先将之前该教师对应课程的统计图片删掉
+        picreg = "^[^_]*_" + teacher_id + '_' + course_id + "\.jpg$"
+        for pic in os.listdir("static/teacher_stat_img/"):
+            if re.match(picreg, pic) != None:
+                os.remove("static/teacher_stat_img/" + pic)
+        #先查询教师教授的所有课程信息
+        connection.connect()
+        cursor = connection.cursor()
+        cursor.execute("select course.course_id,course_name,credits \
+                        from course natural join teach \
+                        where teacher_id='%s'" % (teacher_id))
+        result = cursor.fetchall()
+        result_list = []
+        for r in result:
+            result_list.append({"course_id":r[0],'course_name':r[1],'credits':r[2]})
+        #查询该课程的学生成绩分布
+        cursor.execute("select grade,count(grade) as counts\
+                        from take\
+                        where course_id=%s\
+                        group by grade;",[course_id])   #根据具体课程id查询成绩分布
+        grade_list=[]
+        result = cursor.fetchone()
+        tmp=('grade','counts')
+        while result:
+            grade_list.append(dict(zip(tmp, result)))
+            result = cursor.fetchone()
+        connection.close()
+        for i in range(0, len(grade_list)):
+            print("取得成绩:%d 对应次数:%d" % (grade_list[i]['grade'], grade_list[i]['counts']))
+        num_list = [0, 0, 0, 0, 0]
+        label_list = ["0-59分", "60-69分", "70-79分", "80-89分", "90-100分"]
+        color_list = ["royalblue","darkcyan","yellowgreen","yellow","orangered"]
+        for i in range(len(grade_list)):
+            grade = grade_list[i]['grade']
+            if grade >= 0 and grade <= 59:
+                num_list[0] += grade_list[i]['counts']
+            elif grade >= 60 and grade <= 69:
+                num_list[1] += grade_list[i]['counts']
+            elif grade >= 70 and grade <= 79:
+                num_list[2] += grade_list[i]['counts']
+            elif grade >= 80 and grade <= 89:
+                num_list[3] += grade_list[i]['counts']
+            else:
+                num_list[4] += grade_list[i]['counts']
+        #柱状图
+        plt.title('成绩分布直方图')
+        plt.xlabel('分数段')
+        plt.ylabel('计数')
+        plt.yticks(list(range(max(num_list) + 1)))
+        plt.bar(range(len(num_list)), num_list, color=color_list, tick_label=label_list)
+        plt.savefig("static/teacher_stat_img/bar_" + teacher_id + '_' + course_id + ".jpg")  #图片拿教师id+课程id作为标识
+        plt.close()
+        #饼图
+        #获得个数非0的成绩段（以及相应的label_list和color_list）
+        pie_num_list, pie_label_list, pie_color_list = [], [], []
+        for i in range(len(num_list)):
+            if num_list[i] > 0:
+                pie_num_list.append(num_list[i])
+                pie_label_list.append(label_list[i])
+                pie_color_list.append(color_list[i])
+        plt.title('成绩分布饼状图')
+        plt.pie(pie_num_list, labels=pie_label_list, colors=pie_color_list, autopct='%1.2f%%', textprops={'fontsize':12,'color':'black'})
+        plt.axis('equal')
+        plt.savefig("static/teacher_stat_img/pie_" + teacher_id + '_' + course_id + ".jpg")#图片拿教师id+课程id作为标识
+        plt.close()
+        #将教师所教的全部课程信息、该课程所有学生成绩分布的数据、图片所在路径包装成一个字典返回给前端
+        data = {}
+        data["courseinfo"] = result_list
+        data["gradeinfo"] = grade_list
+        data["bar"] = "teacher_stat_img/bar_" + teacher_id + '_' + course_id + ".jpg"
+        data["pie"] = "teacher_stat_img/pie_" + teacher_id + '_' + course_id + ".jpg"
+        return render(request, 'teacher4-2.html', data)
+    else:
+        print("用户身份不合法")
+        return redirect('/pro/login/')

@@ -237,12 +237,12 @@
      <div class="selectbox">
          <div class="mainblock">
          <h2>请选择需要查询的课程</h2>
-         <form name="my_form" action="/pro/indexTDistShow/" method="post">
+         <form name="my_form" action="/pro/indexTDistShow" method="post">
              {% csrf_token %}
              <div class="selectbox">
                <select name="my_select">
-                   {% for temp in data%}
-                   <option value ="{{temp.data}}">{{temp.course_name}}</option>
+                   {% for temp in courseinfo%}
+                   <option value = {{temp.course_id}}>{{temp.course_name}}</option>
                    {% endfor %}
                </select>
              </div>
