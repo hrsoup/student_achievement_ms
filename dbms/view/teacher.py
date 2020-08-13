@@ -6,7 +6,7 @@ from django.http import HttpResponse
 def teacher(request):#个人信息
     return render(request,'teacher.html')
 
-def indexTeacher(request):
+def indexTeacher(request):#查询教师个人信息
     print("查询教师自己的信息")
     if 'sessionid' in request.COOKIES and request.session['role'] == 'teacher': 
         teacher_id = request.session['id']
@@ -26,7 +26,7 @@ def indexTeacher(request):
         print("用户身份不合法")
         return redirect('/pro/illegalUser/')
 
-def indexTCourse(request):
+def indexTCourse(request):#查询所授课程信息
     print("查询教师教授的课程")
     if 'sessionid' in request.COOKIES and request.session['role'] == 'teacher':
         teacher_id = request.session['id']
@@ -48,7 +48,7 @@ def indexTCourse(request):
         print("用户身份不合法")
         return redirect('/pro/illegalUser/')
 
-def indexTGrade(request):
+def indexTGrade(request):#查询所授课程学生成绩信息
     print("查询学生的成绩")
     if 'sessionid' in request.COOKIES and request.session['role'] == 'teacher':
         teacher_id = request.session['id']
@@ -70,3 +70,5 @@ def indexTGrade(request):
     else:
         print("用户身份不合法")
         return redirect('/pro/illegalUser/')
+
+#def changeTgrade(request):录入、删除、修改所授课程学生成绩信息

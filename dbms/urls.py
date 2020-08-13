@@ -21,4 +21,8 @@ urlpatterns = [
     path('indexAllTeacher',admin.indexAllTeacher),
     path('indexAllCourse',admin.indexAllCourse),
     path('illegalUser/',enroll.illegal),
+    #path('changeTGrade', admin.changeTgrade),
+    #path('changeAllStu', admin.changeAllStu),
+    #path('changeAllTeacher', admin.changeAllTeacher),
+    #path('changeAllCourse', admin.changeAllCourse),
 ]

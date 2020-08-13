@@ -6,7 +6,7 @@ from django.http import JsonResponse
 def student(request):
     return render(request,'student.html')
 
-def indexStudent(request):
+def indexStudent(request):#查询学生个人信息
     print("查询学生自己的信息")
     if 'sessionid' in request.COOKIES and request.session['role'] == 'student':
         connection.connect()
@@ -26,7 +26,7 @@ def indexStudent(request):
         print("用户身份不合法")
         return redirect('/pro/illegalUser/')
 
-def indexSCourse(request):
+def indexSCourse(request):#查询所选课程信息
     print("查询学生选课信息")
     if 'sessionid' in request.COOKIES and request.session['role'] == 'student':
         connection.connect()
@@ -49,7 +49,7 @@ def indexSCourse(request):
         print("用户身份不合法")
         return redirect('/pro/illegalUser/')
 
-def indexSGPA(request):
+def indexSGPA(request):#查询选修成绩信息
     print("查询学生自己的成绩")
     if 'sessionid' in request.COOKIES and request.session['role'] == 'student':
         connection.connect()

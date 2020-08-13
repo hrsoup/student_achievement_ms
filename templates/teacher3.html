@@ -99,6 +99,91 @@
        background-image:url({% static 'images/background.jpg' %});
        background-size: cover;
       }
+
+      .mainblock{
+     position:absolute;
+     top:364px;
+     left:1385px;
+     width:280px;
+     height:645px;
+     transform:translate(-50%,-50%);
+     width:272px;
+     height:560px;
+     padding:50px;
+     background: rgba(12,12,12,.8);
+     box-sizing:border-box;
+     box-shadow: 0px 15px 25px rgba(0,0,0,.5);
+ }
+ .mainblock h2{
+     margin:0 0 30px;
+     padding:0;
+     color: #fff;
+     text-align:center;
+     font-size:15px
+ }
+ .mainblock .inputbox{
+     position:relative;
+ }
+ .mainblock .inputbox input{
+     width: 100%;
+     padding:10px 0;
+     font-size:16px;
+     color:#fff;
+     letter-spacing: 1px;
+     margin-bottom: 30px;
+     border:none;
+     border-bottom: 1px solid #fff;
+     outline:none;
+     background: transparent;
+ }
+ .mainblock .inputbox label{
+     position:absolute;
+     top:0px;
+     left:0px;
+     padding:10px 0;
+     font-size: 16px;
+     color:#fff;
+     pointer-events:none;
+     transition:.5s;
+ }
+ .mainblock .inputbox input:focus ~ label,
+ .mainblock .inputbox input:valid ~ label
+ {
+     top:-18px;
+     left:0;
+     color:#03a9f4;
+     font-size:14px;
+ }
+
+ .mainblock .selectbox select
+ {
+     width: 200px;
+     position:absolute;
+     top:320px;
+     left:36px;
+     padding:10px 0;
+     font-size:16px;
+     color:orange;
+     margin-bottom: 100px;
+     background: transparent;
+ }
+
+ .mainblock .submit input
+ {
+     width:120px;
+     height:40px;
+     position:absolute;
+     top:400px;
+     left:80px;
+     font-size:15px;
+     border:none;
+     outline:none;
+     color:#fff;
+     background-color: red;
+     padding:15px 32px;
+     cursor: pointer;
+     border-radius:30px;
+ }
     </style>
     <script>
     </script>
@@ -122,7 +207,7 @@
         <input type="button" name="login_off" value="退出系统" onclick="location.href='/pro/logout'"><br><br><br><br> >
     </div>
     <div class="tableblock">
-        <table height="50px" width="1317px" border="5">
+        <table height="50px" width="1027px" border="5">
         <tr>
             <th>学生ID</th>
             <th>学生姓名</th>
@@ -142,6 +227,36 @@
             </tr>
             {% endfor %}
         </table>
+    </div>
+    <div class="mainblock">
+         <h2>请选择功能并给定数据</h2>
+         <form name="my_form" action="/pro/indexTGrade" method="post">
+             {% csrf_token %}
+             <div class="selectbox">
+               <select name="my_select">
+                   <option value = "add">录入学生成绩</option>
+                   <option value = "delete">删除学生成绩</option>
+                   <option value = "update">修改学生成绩</option>
+               </select>
+             </div>
+             <div class="inputbox">
+                 <input type="text" name="student_id" required="">
+                 <label>学生ID</label>
+             </div>
+             <div class="inputbox">
+                 <input type="text" name="course_id" required="">
+                 <label>课程ID</label>
+             </div>
+             <div class="inputbox">
+                 <input type="text" name="grade">
+                 <label>成绩</label>
+             </div>
+             <div class="submit">
+               <input type="submit" name="execute" value="确定" >
+             </div>
+              <div class="submit">
+             </div>
+         </form>
     </div>
     <div class="background">
     </div>

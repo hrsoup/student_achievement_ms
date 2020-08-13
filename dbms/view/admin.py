@@ -6,7 +6,7 @@ from django.http import HttpResponse
 def admin(request): #个人信息
     return render(request,'admin.html')
 
-def indexAdmin(request):
+def indexAdmin(request):#查询管理员个人信息
     print("查询管理员个人信息")
     if 'sessionid' in request.COOKIES and request.session['role'] == 'admin': 
         admin_id = request.session['id']
@@ -25,7 +25,7 @@ def indexAdmin(request):
         print("用户身份不合法")
         return redirect('/pro/illegalUser/')
 
-def indexAllStu(request):
+def indexAllStu(request):#查询所有学生信息
     print("查询所有学生信息")
     if 'sessionid' in request.COOKIES and request.session['role'] == 'admin':
         admin_id = request.session['id']
@@ -47,7 +47,7 @@ def indexAllStu(request):
         print("用户身份不合法")
         return redirect('/pro/illegalUser/')
 
-def indexAllTeacher(request):
+def indexAllTeacher(request):#查询所有教师信息
     print("查询所有教师信息")
     if 'sessionid' in request.COOKIES and request.session['role'] == 'admin':
         teacher_id = request.session['id']
@@ -67,7 +67,7 @@ def indexAllTeacher(request):
         print("用户身份不合法")
         return redirect('/pro/illegalUser/')
 
-def indexAllCourse(request):
+def indexAllCourse(request):#查询所有课程信息
     print("查询所有课程信息")
     if 'sessionid' in request.COOKIES and request.session['role'] == 'admin':
         teacher_id = request.session['id']
@@ -86,3 +86,7 @@ def indexAllCourse(request):
     else:
         print("用户身份不合法")
         return redirect('/pro/illegalUser/')
+
+#def changeAllStu(request):录入、删除、修改学生信息
+#def changeAllTeacher(request):录入、删除、修改教师信息
+#def changeAllCourse(request):录入、删除、修改课程信息

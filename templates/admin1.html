@@ -99,6 +99,7 @@
        background-image:url({% static 'images/background.jpg' %});
        background-size: cover;
       }
+
     </style>
     <script>
     </script>
@@ -134,6 +135,36 @@
             </tr>
             {% endfor %}
         </table>
+    </div>
+    <div class="mainblock">
+         <h2>请选择功能并给定数据</h2>
+         <form name="my_form" action="/pro/indexTGrade" method="post">
+             {% csrf_token %}
+             <div class="selectbox">
+               <select name="my_select">
+                   <option value = "add">录入成绩</option>
+                   <option value = "add">删除成绩</option>
+                   <option value = "add">修改成绩</option>
+               </select>
+             </div>
+             <div class="inputbox">
+                 <input type="text" name="student_id" required="">
+                 <label>学生ID</label>
+             </div>
+             <div class="inputbox">
+                 <input type="text" name="course_id" required="">
+                 <label>课程ID</label>
+             </div>
+             <div class="inputbox">
+                 <input type="text" name="grade" required="">
+                 <label>成绩</label>
+             </div>
+             <div class="submit">
+               <input type="submit" name="execute" value="执行" >
+             </div>
+              <div class="submit">
+             </div>
+         </form>
     </div>
 
     <div class="background">
