@@ -23,7 +23,7 @@ def indexAdmin(request):
         return render(request, 'admin1.html', {"data": result_list})
     else:
         print("用户身份不合法")
-        return redirect('/pro/login/')
+        return redirect('/pro/illegalUser/')
 
 def indexAllStu(request):
     print("查询所有学生信息")
@@ -45,7 +45,7 @@ def indexAllStu(request):
         return render(request, 'admin2.html', {"data": result_list})
     else:
         print("用户身份不合法")
-        return redirect('/pro/login/')
+        return redirect('/pro/illegalUser/')
 
 def indexAllTeacher(request):
     print("查询所有教师信息")
@@ -65,7 +65,7 @@ def indexAllTeacher(request):
         return render(request, 'admin3.html', {"data": result_list})
     else:
         print("用户身份不合法")
-        return redirect('/pro/login/')
+        return redirect('/pro/illegalUser/')
 
 def indexAllCourse(request):
     print("查询所有课程信息")
@@ -85,4 +85,4 @@ def indexAllCourse(request):
         return render(request, 'admin4.html', {"data": result_list})
     else:
         print("用户身份不合法")
-        return redirect('/pro/login/')
+        return redirect('/pro/illegalUser/')

@@ -88,3 +88,6 @@ def logout(request):#退出登录
         obj.delete_cookie('sessionid')
     print("成功退出系统，需进入请重新登录")
     return obj
+
+def illegal(request):   #识别用户访问 不允许访问 的界面
+    return render(request, 'illegal_user.html')

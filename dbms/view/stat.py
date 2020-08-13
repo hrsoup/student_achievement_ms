@@ -85,7 +85,7 @@ def indexSGPADIST(request):
         return render(request, 'student4.html', data)
     else:
         print("用户身份不合法")
-        return redirect('/pro/login/')
+        return redirect('/pro/illegalUser/')
 
 #教师成绩分布的统计函数
 def indexTDistSelect(request):#获取下拉框
@@ -107,7 +107,7 @@ def indexTDistSelect(request):#获取下拉框
         return render(request, 'teacher4-1.html', {"data": result_list})
     else:
         print("用户身份不合法")
-        return redirect('/pro/login/')
+        return redirect('/pro/illegalUser/')
 
 def indexTDistShow(request):#获取下拉框和成绩统计分布的对应图片
     print("查询教师教授的课程以及该课程所有学生的成绩分布")
@@ -194,4 +194,4 @@ def indexTDistShow(request):#获取下拉框和成绩统计分布的对应图片
         return render(request, 'teacher4-2.html', data)
     else:
         print("用户身份不合法")
-        return redirect('/pro/login/')
+        return redirect('/pro/illegalUser/')

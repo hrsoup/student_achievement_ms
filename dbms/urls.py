@@ -20,4 +20,5 @@ urlpatterns = [
     path('indexAllStu',admin.indexAllStu),
     path('indexAllTeacher',admin.indexAllTeacher),
     path('indexAllCourse',admin.indexAllCourse),
+    path('illegalUser/',enroll.illegal),
 ]

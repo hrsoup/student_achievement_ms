@@ -24,7 +24,7 @@ def indexStudent(request):
         return render(request,'student1.html',{"data":result_list})
     else:
         print("用户身份不合法")
-        return redirect('/pro/login/')
+        return redirect('/pro/illegalUser/')
 
 def indexSCourse(request):
     print("查询学生选课信息")
@@ -47,7 +47,7 @@ def indexSCourse(request):
         return render(request,'student2.html',{"data":result_list})
     else:
         print("用户身份不合法")
-        return redirect('/pro/login/')
+        return redirect('/pro/illegalUser/')
 
 def indexSGPA(request):
     print("查询学生自己的成绩")
@@ -70,4 +70,4 @@ def indexSGPA(request):
         return render(request,'student3.html',{"data":result_list})
     else:
         print("用户身份不合法")
-        return redirect('/pro/login/')
+        return redirect('/pro/illegalUser/')

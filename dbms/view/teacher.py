@@ -24,7 +24,7 @@ def indexTeacher(request):
         return render(request, 'teacher1.html', {"data": result_list})
     else:
         print("用户身份不合法")
-        return redirect('/pro/login/')
+        return redirect('/pro/illegalUser/')
 
 def indexTCourse(request):
     print("查询教师教授的课程")
@@ -46,7 +46,7 @@ def indexTCourse(request):
         return render(request, 'teacher2.html', {"data": result_list})
     else:
         print("用户身份不合法")
-        return redirect('/pro/login/')
+        return redirect('/pro/illegalUser/')
 
 def indexTGrade(request):
     print("查询学生的成绩")
@@ -69,4 +69,4 @@ def indexTGrade(request):
         return render(request, 'teacher3.html',{"data": result_list})
     else:
         print("用户身份不合法")
-        return redirect('/pro/login/')
+        return redirect('/pro/illegalUser/')
