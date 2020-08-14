@@ -218,22 +218,20 @@
     <div class="tableblock">
         <table height="50px" width="1027px" border="5">
         <tr>
-            <th>班级ID</th>
-            <th>院系</th>
-            <th>专业</th>
+            <th>教师ID</th>
+            <th>课程ID</th>
         </tr>
             {%for temp in data%}
             <tr>
-            <td>{{temp.class_id}}</td>
-            <td>{{temp.dept}}</td>
-            <td>{{temp.major}}</td>
+            <td>{{temp.teacher_id}}</td>
+            <td>{{temp.course_id}}</td>
             </tr>
             {% endfor %}
         </table>
     </div>
      <div class="mainblock">
          <h2>请选择功能并给定数据</h2>
-         <form name="my_form" action="/pro/changeallteach" method="post">
+         <form name="my_form" action="/pro/changeAllteach" method="post">
              {% csrf_token %}
              <div class="selectbox">
                <select name="my_select">
@@ -245,10 +243,6 @@
              <div class="inputbox">
                  <input type="text" name="class_id" required="" >
                  <label>教师ID</label>
-             </div>
-             <div class="inputbox">
-                 <input type="text" name="dept">
-                 <label>学生ID</label>
              </div>
              <div class="inputbox">
                  <input type="text" name="major">
