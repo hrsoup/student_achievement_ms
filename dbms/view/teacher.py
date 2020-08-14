@@ -93,21 +93,21 @@ def changeTGrade(request):#录入、删除、修改所授课程学生成绩信�
             error_count = 0 
             if len(student) == 0:
                 print("该学生不存在")
-                messages.success(request,"该学生不存在")
+                messages.error(request,"该学生不存在")
                 error_count += 1
-            if len(course) == 0:
+            elif len(course) == 0:
                 print("该课程不存在")
-                messages.success(request,"该课程不存在") 
+                messages.error(request,"该课程不存在") 
                 error_count += 1
-            if len(grades) !=0:
+            elif len(grades) !=0:
                 print("该学生此门课成绩已录入")  
-                messages.success(request,"该学生此门课成绩已录入") 
+                messages.error(request,"该学生此门课成绩已录入") 
                 error_count += 1         
-            if (grade < 0) or (grade > 100):
+            elif (grade < 0) or (grade > 100):
                 print("请输入0到100之间的数字")    
-                messages.success(request,"请输入0到100之间的数字")
+                messages.error(request,"请输入0到100之间的数字")
                 error_count += 1  
-            if error_count == 0:
+            elif error_count == 0:
                 cursor.execute('insert into take values \
                                 ("%s", "%s", %d)' % (student_id, course_id, grade))
 
@@ -118,21 +118,21 @@ def changeTGrade(request):#录入、删除、修改所授课程学生成绩信�
             error_count = 0 
             if len(student) == 0:
                 print("该学生不存在")
-                messages.success(request,"该学生不存在")
+                messages.error(request,"该学生不存在")
                 error_count += 1
-            if len(course) == 0:
+            elif len(course) == 0:
                 print("该课程不存在")
-                messages.success(request,"该课程不存在") 
+                messages.error(request,"该课程不存在") 
                 error_count += 1
-            if len(grades) !=0 and (error_count == 0):
+            elif len(grades) !=0 and (error_count == 0):
                 print("该学生没有上此门课程")  
-                messages.success(request,"该学生没有上此门课程") 
+                messages.error(request,"该学生没有上此门课程") 
                 error_count += 1         
-            if (grade < 0) or (grade > 100):
+            elif (grade < 0) or (grade > 100):
                 print("请输入0到100之间的数字")    
-                messages.success(request,"请输入0到100之间的数字")
+                messages.error(request,"请输入0到100之间的数字")
                 error_count += 1  
-            if error_count == 0:
+            elif error_count == 0:
                 cursor.execute('update take set \
                                 grade = %d where (student_id = "%s") and (course_id = "%s")' % (grade, student_id, course_id))
 
@@ -142,17 +142,17 @@ def changeTGrade(request):#录入、删除、修改所授课程学生成绩信�
             error_count = 0 
             if len(student) == 0:
                 print("该学生不存在")
-                messages.success(request,"该学生不存在")
+                messages.error(request,"该学生不存在")
                 error_count += 1
-            if len(course) == 0:
+            elif len(course) == 0:
                 print("该课程不存在")
-                messages.success(request,"该课程不存在") 
+                messages.error(request,"该课程不存在") 
                 error_count += 1
-            if len(grades) !=0 and (error_count == 0):
+            elif len(grades) !=0 and (error_count == 0):
                 print("该学生没有上此门课程")  
-                messages.success(request,"该学生没有上此门课程") 
+                messages.error(request,"该学生没有上此门课程") 
                 error_count += 1    
-            if error_count == 0:
+            elif error_count == 0:
                 cursor.execute('delete from take where student_id = "%s" and course_id = "%s"' % (student_id, course_id))
 
         cursor.execute("select take.student_id,student_name,take.course_id,course_name,credits,grade \
