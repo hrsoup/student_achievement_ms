@@ -193,11 +193,7 @@ def changeAllStu(request):#录入、删除、修改学生信息
             elif len(Class) == 0:
                 print("该班级不存在")
                 messages.error(request,"该班级不存在") 
-                error_count += 1     
-            elif len(stu_class) == 0 and (error_count == 0):
-                print("该学生不在此班级中")  
-                messages.error(request,"该学生不在此班级中") 
-                error_count += 1                    
+                error_count += 1                  
             elif error_count == 0:  
                 cursor.execute('update student set password = md5("%s"), student_name = "%s", class_id = "%s" where \
                             student_id = "%s"' % (password, student_name, class_id, student_id))
