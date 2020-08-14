@@ -20,9 +20,6 @@ def indexTeacher(request):#查询教师个人信息
         result_list = []
         for r in result:
             result_list.append({"teacher_id":r[0],'teacher_name':r[2],'dept':r[3]})
-        for i in range(0, len(result_list)):
-            print("教师id:%s 姓名:%s 所在学院:%s " % (result_list[i]['teacher_id'], result_list[i]['teacher_name']
-                                                           , result_list[i]['dept']))
         return render(request, 'teacher1.html', {"data": result_list})
     else:
         print("用户身份不合法")
@@ -80,6 +77,7 @@ def ifdigit(num):
 
 
 def changeTGrade(request):#录入、删除、修改所授课程学生成绩信息
+    page=request.GET.get('page',1)
     if 'sessionid' in request.COOKIES and request.session['role'] == 'teacher':
         teacher_id = request.session['id']
         connection.connect()
@@ -128,10 +126,7 @@ def changeTGrade(request):#录入、删除、修改所授课程学生成绩信�
         for r in result:
             result_list.append({"student_id":r[0],'student_name':r[1],'course_id':r[2],\
                                 'course_name':r[3],'credits':r[4],'grade':r[5]})
-        for i in range(0,len(result_list)):
-            print("学生ID:%s 学生姓名:%s 课程ID:%s 课程名:%s 学分:%f 成绩：%f" % (result_list[i]['student_id'], result_list[i]['student_name']
-            , result_list[i]['course_id'], result_list[i]['course_name'], result_list[i]['credits'],result_list[i]['grade']))
-        return render(request, 'teacher3.html',{"data": result_list})
+        return render(request, 'teacher3.html',pageBuilder(result_list,page))
 
     else:
         print("用户身份不合法")

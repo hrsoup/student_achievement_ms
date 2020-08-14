@@ -38,8 +38,8 @@ def indexSGPADIST(request):
         while result:
             result_list.append(dict(zip(tmp, result)))
             result = cursor.fetchone()
-        for i in range(0, len(result_list)):
-            print("取得成绩:%d 对应次数:%d" % (result_list[i]['grade'], result_list[i]['counts']))
+        # for i in range(0, len(result_list)):
+        #     print("取得成绩:%d 对应次数:%d" % (result_list[i]['grade'], result_list[i]['counts']))
         num_list = [0, 0, 0, 0, 0]
         label_list = ["0-59分", "60-69分", "70-79分", "80-89分", "90-100分"]
         color_list = ["royalblue","darkcyan","yellowgreen","yellow","orangered"]
@@ -102,8 +102,8 @@ def indexTDistSelect(request):#获取下拉框
         result_list = []
         for r in result:
             result_list.append({"course_id":r[0],'course_name':r[1],'credits':r[2]})
-        for i in range(0, len(result_list)):
-            print("课程ID:%s 课程名:%s" % (result_list[i]['course_id'], result_list[i]['course_name']))
+        # for i in range(0, len(result_list)):
+        #     print("课程ID:%s 课程名:%s" % (result_list[i]['course_id'], result_list[i]['course_name']))
         return render(request, 'teacher4-1.html', {"data": result_list})
     else:
         print("用户身份不合法")
@@ -144,8 +144,8 @@ def indexTDistShow(request):#获取下拉框和成绩统计分布的对应图片
             grade_list.append(dict(zip(tmp, result)))
             result = cursor.fetchone()
         connection.close()
-        for i in range(0, len(grade_list)):
-            print("取得成绩:%d 对应次数:%d" % (grade_list[i]['grade'], grade_list[i]['counts']))
+        # for i in range(0, len(grade_list)):
+        #     print("取得成绩:%d 对应次数:%d" % (grade_list[i]['grade'], grade_list[i]['counts']))
         num_list = [0, 0, 0, 0, 0]
         label_list = ["0-59分", "60-69分", "70-79分", "80-89分", "90-100分"]
         color_list = ["royalblue","darkcyan","yellowgreen","yellow","orangered"]
