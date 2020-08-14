@@ -27,8 +27,8 @@ urlpatterns = [
     path('changeAllCourse', admin.changeAllCourse),
     path('indexAllClass', admin.indexAllClass),
     path('changeallClass', admin.changeallClass),
-    #path('indexAllteach', admin.indexAllClass),
-    #path('changeallteach', admin.changeallClass),
-    #path('indexAlltake', admin.indexAllClass),
-    #path('changealltake', admin.changeallClass),
+    #path('indexAlltake', admin.indexAlltake),
+    #path('changealltake', admin.changealltake),
+    #path('indexAllteach', admin.indexAllteach),
+    #path('changeallteach', admin.changeallteach),
 ]
