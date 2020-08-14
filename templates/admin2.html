@@ -5,6 +5,46 @@
     <meta charset="UTF-8">
     <title>学生信息</title>
      <style>
+      ul.pagination {
+        position:absolute;
+        left:450px;
+        top:608px;
+        display: inline-block;
+        
+        padding: 0;
+        margin: 0;
+      }
+
+      ul.pagination li {display: inline;}
+
+      ul.pagination li a {
+        color: black;
+        float: left;
+        padding: 8px 16px;
+        text-decoration: none;
+        transition: background-color .3s;
+        border: 1px solid #1c1c1c;
+      }
+
+      .pagination li:first-child a {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+      }
+
+      .pagination li:last-child a {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
+
+      ul.pagination li a.active {
+        background-color: #4CAF50;
+        color: white;
+        border: 1px solid #4CAF50;
+      }
+
+      ul.pagination li a:hover:not(.active) {
+          background-color: #ddd;
+        }
       body{
        margin:0px;
        padding:0px;
@@ -208,23 +248,23 @@
     </div>
     <div class="tableblock">
         <table height="50px" width="1027px" border="5">
-        <tr>
-            <th>学生ID</th>
-            <th>登录密码</th>
-            <th>姓名</th>
-            <th>所在学院</th>
-            <th>所在专业</th>
-            <th>所在班级</th>
-        </tr>
-            {%for temp in data%}
             <tr>
-                <td>{{temp.student_id}}</td>
-                <td>{{temp.password}}</td>
-                <td>{{temp.student_name}}</td>
-                <td>{{temp.dept}}</td>
-                <td>{{temp.major}}</td>
-                <td>{{temp.class_id}}</td>
+                <th>学生ID</th>
+                <th>登录密码</th>
+                <th>姓名</th>
+                <th>所在学院</th>
+                <th>所在专业</th>
+                <th>所在班级</th>
             </tr>
+            {% for item in items %}
+                <tr>
+                <td>{{item.student_id}}</td>
+                <td>{{item.password}}</td>
+                <td>{{item.student_name}}</td>
+                <td>{{item.dept}}</td>
+                <td>{{item.major}}</td>
+                <td>{{item.class_id}}</td>
+                </tr>
             {% endfor %}
         </table>
     </div>
@@ -262,5 +302,34 @@
     </div>
     <div class="background">
     </div>
+    <ul class="pagination">
+      <li>
+        {% if items.has_previous%}
+            <a href="?page={{items.previous_page_number}}">«</a>
+        {% endif %}
+      </li>
+      <li>
+        {% if leftLowerBound > 1 %}
+            <a href="?page=1">1</a>
+            <a>...</a>
+        {% endif %}
+        {% for i  in rangeLeft %}
+            <a href="?page={{ i }}">{{ i }}</a>
+        {% endfor %}
+        <a class="active" href="#">{{items.number}}</a>
+        {% for i in rangeRight %}
+            <a href='?page={{ i }}'>{{ i }}</a>
+        {% endfor %}
+        {% if rightUpperBound < items.paginator.num_pages %}
+            <a>...</a>
+            <a href="?page={{ items.paginator.num_pages }}">{{ items.paginator.num_pages }}</a>
+        {% endif %}
+      </li>
+      <li>
+        {% if items.has_next %}
+            <a href="?page={{items.next_page_number}}">»</a>
+        {% endif %}
+      </li>
+    </ul>
 </body>
 </html>

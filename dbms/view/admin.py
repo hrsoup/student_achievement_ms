@@ -2,6 +2,7 @@
 from django.shortcuts import render,redirect
 from django.db import connection
 from django.http import HttpResponse
+from dbms.view.pageholder import pageBuilder
 
 def admin(request): #个人信息
     return render(request,'admin.html')
@@ -27,6 +28,7 @@ def indexAdmin(request):#查询管理员个人信息
 
 def indexAllStu(request):#查询所有学生信息
     print("查询所有学生信息")
+    page=request.GET.get('page',1)
     if 'sessionid' in request.COOKIES and request.session['role'] == 'admin':
         admin_id = request.session['id']
         connection.connect()
@@ -36,13 +38,13 @@ def indexAllStu(request):#查询所有学生信息
         result = cursor.fetchall()
         connection.close()
         result_list = []
-        for r in result:
-            result_list.append({"student_id":r[0],'password':r[1],'student_name':r[2],\
-                                'dept':r[3],'major':r[4],'class_id':r[5]})
         for i in range(0, len(result_list)):
             print("学生ID:%s 登录密码:%s 姓名:%s 所在学院:%s 所在专业:%s 所在班级:%s" % (result_list[i]['student_id'], result_list[i]['password']
            ,result_list[i]['student_name'], result_list[i]['dept'],result_list[i]['major'],result_list[i]['class_id']))
-        return render(request, 'admin2.html', {"data": result_list})
+        for r in result:
+            result_list.append({"student_id":r[0],'password':r[1],'student_name':r[2],\
+                                'dept':r[3],'major':r[4],'class_id':r[5]})
+        return render(request, 'admin2.html', pageBuilder(result_list,page))
     else:
         print("用户身份不合法")
         return redirect('/pro/illegalUser/')
