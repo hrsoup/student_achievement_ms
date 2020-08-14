@@ -400,15 +400,16 @@ def indexAlltake(request):#查询学生选课信息
         teacher_id = request.session['id']
         connection.connect()
         cursor = connection.cursor()
-        cursor.execute("select * from take")
+        cursor.execute("select take.student_id, student_name, take.course_id, course_name from \
+                        take natural join student natural join course")
         result = cursor.fetchall()
         connection.close()
         result_list = []
         for r in result:
-            result_list.append({"student_id":r[0],'course_id':r[1],'grade':r[2]})
+            result_list.append({"student_id":r[0],'student_name':r[1],'course_id':r[2], 'course_name':r[3]})
         for i in range(0, len(result_list)):
-            print("学生ID:%s 课程ID:%s 分数:%f" % (result_list[i]['student_id'], result_list[i]['course_id']
-                                            , result_list[i]['grade']))
+            print("学生ID:%s 学生名字:%s 课程ID:%s 课程名字:%s" % (result_list[i]['student_id'], result_list[i]['student_name']
+                                            , result_list[i]['course_id'], result_list[i]['course_name']))
         return render(request, 'admin6.html', {"data": result_list})
     else:
         print("用户身份不合法")
@@ -478,15 +479,16 @@ def changealltake(request):#录入、查询、修改学生选课信息
             elif error_count == 0: 
                 cursor.execute('delete from take where student_id = "%s" and course_id = "%s"' % (student_id, course_id))
 
-        cursor.execute("select * from take")
+        cursor.execute("select take.student_id, student_name, take.course_id, course_name from \
+                        take natural join student natural join course")
         result = cursor.fetchall()
         connection.close()
         result_list = []
         for r in result:
-            result_list.append({"student_id":r[0],'course_id':r[1],'grade':r[2]})
+            result_list.append({"student_id":r[0],'student_name':r[1],'course_id':r[2], 'course_name':r[3]})
         for i in range(0, len(result_list)):
-            print("学生ID:%s 课程ID:%s 分数:%f" % (result_list[i]['student_id'], result_list[i]['course_id']
-                                            , result_list[i]['grade']))
+            print("学生ID:%s 学生名字:%s 课程ID:%s 课程名字:%s" % (result_list[i]['student_id'], result_list[i]['student_name']
+                                            , result_list[i]['course_id'], result_list[i]['course_name']))
         return render(request, 'admin6.html', {"data": result_list})
     else:
         print("用户身份不合法")
@@ -499,14 +501,16 @@ def indexAllteach(request):#查询教师授课信息
         teacher_id = request.session['id']
         connection.connect()
         cursor = connection.cursor()
-        cursor.execute("select * from teach")
+        cursor.execute("select teach.teacher_id, teacher_name, teach.course_id, course_name from \
+                        teach natural join teacher natural join course")
         result = cursor.fetchall()
         connection.close()
         result_list = []
         for r in result:
-            result_list.append({"teacher_id":r[0],'course_id':r[1]})
+            result_list.append({"teacher_id":r[0],'teacher_name':r[1],'course_id':r[2], 'course_name':r[3]})
         for i in range(0, len(result_list)):
-            print("教师ID:%s 课程ID:%s" % (result_list[i]['teacher_id'], result_list[i]['course_id']))
+            print("教师ID:%s 教师名字:%s 课程ID:%s 课程名字:%s" % (result_list[i]['teacher_id'], result_list[i]['teacher_name']
+                                            , result_list[i]['course_id'], result_list[i]['course_name']))
         return render(request, 'admin7.html', {"data": result_list})
     else:
         print("用户身份不合法")
@@ -556,7 +560,7 @@ def changeallteach(request):#录入、查询、修改教师授课信息
 
             cursor.execute("select * from teach where \
                             teacher_id = '%s' and course_id = '%s'" % (teacher_id, course_id))
-            stu_class = cursor.fetchall()
+            tea_course = cursor.fetchall()
             
             error_count = 0
             if len(teacher) == 0:
@@ -574,14 +578,16 @@ def changeallteach(request):#录入、查询、修改教师授课信息
             elif error_count == 0: 
                 cursor.execute('delete from teach where teacher_id = "%s" and course_id = "%s"' % (teacher_id, course_id))
 
-        cursor.execute("select * from teach")
+        cursor.execute("select teach.teacher_id, teacher_name, teach.course_id, course_name from \
+                        teach natural join teacher natural join course")
         result = cursor.fetchall()
         connection.close()
         result_list = []
         for r in result:
-            result_list.append({"teacher_id":r[0],'course_id':r[1]})
+            result_list.append({"teacher_id":r[0],'teacher_name':r[1],'course_id':r[2], 'course_name':r[3]})
         for i in range(0, len(result_list)):
-            print("教师ID:%s 课程ID:%s" % (result_list[i]['teacher_id'], result_list[i]['course_id']))
+            print("教师ID:%s 教师名字:%s 课程ID:%s 课程名字:%s" % (result_list[i]['teacher_id'], result_list[i]['teacher_name']
+                                            , result_list[i]['course_id'], result_list[i]['course_name']))
         return render(request, 'admin7.html', {"data": result_list})
     else:
         print("用户身份不合法")

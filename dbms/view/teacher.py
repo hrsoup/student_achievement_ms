@@ -92,33 +92,7 @@ def changeTGrade(request):#录入、删除、修改所授课程学生成绩信�
         cursor.execute("select * from course where course_id = '%s' " % (course_id))
         course = cursor.fetchall()
 
-        if operation == 'add': #录入
-            grade = request.POST.get('grade')
-            cursor.execute("select * from take where course_id = '%s' and student_id = '%s'" % (course_id, student_id))
-            grades = cursor.fetchall()
-            error_count = 0 
-            if len(student) == 0:
-                print("该学生不存在")
-                messages.error(request,"该学生不存在")
-                error_count += 1
-            elif len(course) == 0:
-                print("该课程不存在")
-                messages.error(request,"该课程不存在") 
-                error_count += 1
-            elif len(grades) !=0:
-                print("该学生此门课成绩已录入")  
-                messages.error(request,"该学生此门课成绩已录入") 
-                error_count += 1         
-            elif (ifdigit(grade) == False) or ((ifdigit(grade) == True) and ((float(grade) < 0) or (float(grade) > 100))):
-                print("请输入0到100之间的数字")    
-                messages.error(request,"请输入0到100之间的数字")
-                error_count += 1  
-            elif error_count == 0:
-                grade = float(grade)
-                cursor.execute('insert into take values \
-                                ("%s", "%s", "%f")' % (student_id, course_id, grade))
-
-        elif operation == 'update': #修改
+        if operation == 'update': #修改
             grade = request.POST.get('grade')
             cursor.execute("select * from take where course_id = '%s' and student_id = '%s'" % (course_id, student_id))
             grades = cursor.fetchall()
@@ -143,25 +117,6 @@ def changeTGrade(request):#录入、删除、修改所授课程学生成绩信�
                 grade = float(grade)
                 cursor.execute('update take set \
                                 grade = "%f" where (student_id = "%s") and (course_id = "%s")' % (grade, student_id, course_id))
-
-        elif operation == 'delete': #删除
-            cursor.execute("select * from take where course_id = '%s' and student_id = '%s'" % (course_id, student_id))
-            grades = cursor.fetchall()
-            error_count = 0 
-            if len(student) == 0:
-                print("该学生不存在")
-                messages.error(request,"该学生不存在")
-                error_count += 1
-            elif len(course) == 0:
-                print("该课程不存在")
-                messages.error(request,"该课程不存在") 
-                error_count += 1
-            elif len(grades) ==0 and (error_count == 0):
-                print("该学生没有上此门课程")  
-                messages.error(request,"该学生没有上此门课程") 
-                error_count += 1    
-            elif error_count == 0:
-                cursor.execute('delete from take where student_id = "%s" and course_id = "%s"' % (student_id, course_id))
 
         cursor.execute("select take.student_id,student_name,take.course_id,course_name,credits,grade \
                         from student natural join course natural join take natural join teach \

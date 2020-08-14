@@ -219,12 +219,16 @@
         <table height="50px" width="1027px" border="5">
         <tr>
             <th>学生ID</th>
+            <th>学生姓名</th>
             <th>课程ID</th>
+            <th>课程名称</th>
         </tr>
             {%for temp in data%}
             <tr>
             <td>{{temp.student_id}}</td>
+            <td>{{temp.student_name}}</td>
             <td>{{temp.course_id}}</td>
+            <td>{{temp.course_name}}</td>
             </tr>
             {% endfor %}
         </table>
