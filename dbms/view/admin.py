@@ -140,6 +140,7 @@ def indexAllteach(request):#查询教师授课信息
         return redirect('/pro/illegalUser/')  
 
 def changeAllStu(request):#录入、删除、修改学生信息
+    page=request.GET.get('page',1)
     if 'sessionid' in request.COOKIES and request.session['role'] == 'admin':
         admin_id = request.session['id']
         connection.connect()
@@ -215,10 +216,7 @@ def changeAllStu(request):#录入、删除、修改学生信息
         for r in result:
             result_list.append({"student_id":r[0],'password':r[1],'student_name':r[2],\
                                 'dept':r[3],'major':r[4],'class_id':r[5]})
-        for i in range(0, len(result_list)):
-            print("学生ID:%s 登录密码:%s 姓名:%s 所在学院:%s 所在专业:%s 所在班级:%s" % (result_list[i]['student_id'], result_list[i]['password']
-           ,result_list[i]['student_name'], result_list[i]['dept'],result_list[i]['major'],result_list[i]['class_id']))
-        return render(request, 'admin2.html', {"data": result_list})
+        return render(request, 'admin2.html', pageBuilder(result_list,page))
 
     else:
         print("用户身份不合法")
@@ -226,6 +224,7 @@ def changeAllStu(request):#录入、删除、修改学生信息
 
 
 def changeAllTeacher(request):#录入、删除、修改教师信息
+    page=request.GET.get('page',1)
     if 'sessionid' in request.COOKIES and request.session['role'] == 'admin':
         teacher_id = request.session['id']
         connection.connect()
@@ -278,10 +277,7 @@ def changeAllTeacher(request):#录入、删除、修改教师信息
         result_list = []
         for r in result:
             result_list.append({"teacher_id":r[0],"password":r[1],'teacher_name':r[2],'dept':r[3]})
-        for i in range(0, len(result_list)):
-            print("教师ID:%s 登录密码:%s 姓名:%s 所在学院:%s" % (result_list[i]['teacher_id'], result_list[i]['password']
-                                            , result_list[i]['teacher_name'],result_list[i]['dept']))
-        return render(request, 'admin3.html', {"data": result_list})
+        return render(request, 'admin3.html',  pageBuilder(result_list,page))
     else:
         print("用户身份不合法")
         return redirect('/pro/illegalUser/')
@@ -297,6 +293,7 @@ def ifdigit(num):
         return False
 
 def changeAllCourse(request):#录入、删除、修改课程信息
+    page=request.GET.get('page',1)
     if 'sessionid' in request.COOKIES and request.session['role'] == 'admin':
         teacher_id = request.session['id']
         connection.connect()
@@ -364,15 +361,13 @@ def changeAllCourse(request):#录入、删除、修改课程信息
         result_list = []
         for r in result:
             result_list.append({"course_id":r[0],'course_name':r[1],'credits':r[2]})
-        for i in range(0, len(result_list)):
-            print("课程ID:%s 课程名:%s 学分:%f" % (result_list[i]['course_id'], result_list[i]['course_name']
-                                            , result_list[i]['credits']))
-        return render(request, 'admin4.html', {"data": result_list})
+        return render(request, 'admin4.html',  pageBuilder(result_list,page))
     else:
         print("用户身份不合法")
         return redirect('/pro/illegalUser/')
 
 def changeallClass(request):#录入、删除、修改班级信息
+    page=request.GET.get('page',1)
     if 'sessionid' in request.COOKIES and request.session['role'] == 'admin':
         teacher_id = request.session['id']
         connection.connect()
@@ -420,15 +415,13 @@ def changeallClass(request):#录入、删除、修改班级信息
         result_list = []
         for r in result:
             result_list.append({"class_id":r[0],'dept':r[1],'major':r[2]})
-        for i in range(0, len(result_list)):
-            print("班级ID:%s 院系:%s 专业:%s" % (result_list[i]['class_id'], result_list[i]['dept']
-                                            , result_list[i]['major']))
-        return render(request, 'admin5.html', {"data": result_list})
+        return render(request, 'admin5.html',  pageBuilder(result_list,page))
     else:
         print("用户身份不合法")
         return redirect('/pro/illegalUser/')
 
 def changealltake(request):#录入、查询、修改学生选课信息
+    page=request.GET.get('page',1)
     if 'sessionid' in request.COOKIES and request.session['role'] == 'admin':
         teacher_id = request.session['id']
         connection.connect()
@@ -499,15 +492,13 @@ def changealltake(request):#录入、查询、修改学生选课信息
         result_list = []
         for r in result:
             result_list.append({"student_id":r[0],'student_name':r[1],'course_id':r[2], 'course_name':r[3]})
-        for i in range(0, len(result_list)):
-            print("学生ID:%s 学生名字:%s 课程ID:%s 课程名字:%s" % (result_list[i]['student_id'], result_list[i]['student_name']
-                                            , result_list[i]['course_id'], result_list[i]['course_name']))
-        return render(request, 'admin6.html', {"data": result_list})
+        return render(request, 'admin6.html',  pageBuilder(result_list,page))
     else:
         print("用户身份不合法")
         return redirect('/pro/illegalUser/') 
 
 def changeallteach(request):#录入、查询、修改教师授课信息
+    page=request.GET.get('page',1)
     if 'sessionid' in request.COOKIES and request.session['role'] == 'admin':
         teacher_id = request.session['id']
         connection.connect()
@@ -576,10 +567,7 @@ def changeallteach(request):#录入、查询、修改教师授课信息
         result_list = []
         for r in result:
             result_list.append({"teacher_id":r[0],'teacher_name':r[1],'course_id':r[2], 'course_name':r[3]})
-        for i in range(0, len(result_list)):
-            print("教师ID:%s 教师名字:%s 课程ID:%s 课程名字:%s" % (result_list[i]['teacher_id'], result_list[i]['teacher_name']
-                                            , result_list[i]['course_id'], result_list[i]['course_name']))
-        return render(request, 'admin7.html', {"data": result_list})
+        return render(request, 'admin7.html',  pageBuilder(result_list,page))
     else:
         print("用户身份不合法")
         return redirect('/pro/illegalUser/')
