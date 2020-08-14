@@ -2,6 +2,8 @@
 from django.shortcuts import render,redirect
 from django.db import connection
 from django.http import JsonResponse
+from dbms.view.pageholder import pageBuilder
+
 
 def student(request):
     return render(request,'student.html')
@@ -18,9 +20,6 @@ def indexStudent(request):#查询学生个人信息
         result_list = []
         result = cursor.fetchone()
         result_list.append(dict(zip(tmp,result)))
-        for i in range(0, len(result_list)):
-            print("学生id:%s 姓名:%s 所在学院:%s 所在专业:%s 所在班级:%s"%(result_list[i]['student_id'],result_list[i]['student_name']
-            ,result_list[i]['dept'],result_list[i]['major'],result_list[i]['class_id']))
         return render(request,'student1.html',{"data":result_list})
     else:
         print("用户身份不合法")
@@ -28,6 +27,7 @@ def indexStudent(request):#查询学生个人信息
 
 def indexSCourse(request):#查询所选课程信息
     print("查询学生选课信息")
+    page=request.GET.get('page',1)
     if 'sessionid' in request.COOKIES and request.session['role'] == 'student':
         connection.connect()
         cursor = connection.cursor()
@@ -40,17 +40,15 @@ def indexSCourse(request):#查询所选课程信息
         while result:
             result_list.append(dict(zip(tmp,result)))
             result = cursor.fetchone()
-        for i in range(0, len(result_list)):
-            print("课程ID:%s 课程名:%s 学分:%d" %(result_list[i]['course_id'],result_list[i]['course_name']
-            ,result_list[i]['credits']))
         #html网页做表格结构动态变化并且将cmd输出的内容更新到界面上进行对应显示
-        return render(request,'student2.html',{"data":result_list})
+        return render(request,'student2.html',pageBuilder(result_list,page))
     else:
         print("用户身份不合法")
         return redirect('/pro/illegalUser/')
 
 def indexSGPA(request):#查询选修成绩信息
     print("查询学生自己的成绩")
+    page=request.GET.get('page',1)
     if 'sessionid' in request.COOKIES and request.session['role'] == 'student':
         connection.connect()
         cursor = connection.cursor()
@@ -64,10 +62,7 @@ def indexSGPA(request):#查询选修成绩信息
         while result:
             result_list.append(dict(zip(tmp,result)))
             result = cursor.fetchone()
-        for i in range(0, len(result_list)):
-            print("课程ID:%s 课程名:%s 成绩:%d" % (result_list[i]['course_id'], result_list[i]['course_name']
-            ,result_list[i]['grade']))
-        return render(request,'student3.html',{"data":result_list})
+        return render(request,'student3.html',pageBuilder(result_list,page))
     else:
         print("用户身份不合法")
         return redirect('/pro/illegalUser/')

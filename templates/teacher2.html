@@ -5,6 +5,47 @@
     <meta charset="UTF-8">
     <title>授课信息</title>
      <style>
+     ul.pagination {
+        position:absolute;
+        left:450px;
+        top:608px;
+        display: inline-block;
+        
+        padding: 0;
+        margin: 0;
+      }
+
+      ul.pagination li {display: inline;}
+
+      ul.pagination li a {
+        color: black;
+        float: left;
+        padding: 8px 16px;
+        text-decoration: none;
+        transition: background-color .3s;
+        border: 1px solid #1c1c1c;
+      }
+
+      .pagination li:first-child a {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+      }
+
+      .pagination li:last-child a {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
+
+      ul.pagination li a.active {
+        background-color: #4CAF50;
+        color: white;
+        border: 1px solid #4CAF50;
+      }
+
+      ul.pagination li a:hover:not(.active) {
+          background-color: #ddd;
+      }
+
       body{
        margin:0px;
        padding:0px;
@@ -128,16 +169,47 @@
             <th>课程名</th>
             <th>学分</th>
         </tr>
-            {%for temp in data%}
+            {%for item in items%}
             <tr>
-            <td>{{temp.course_id}}</td>
-            <td>{{temp.course_name}}</td>
-            <td>{{temp.credits}}</td>
+            <td>{{item.course_id}}</td>
+            <td>{{item.course_name}}</td>
+            <td>{{item.credits}}</td>
             </tr>
             {% endfor %}
         </table>
     </div>
     <div class="background">
     </div>
+          {% if ifsetPage == True %}
+    <ul class="pagination">
+      <li>
+        {% if items.has_previous%}
+            <a href="?page={{items.previous_page_number}}">«</a>
+        {% endif %}
+      </li>
+      <li>
+        {% if leftLowerBound > 1 %}
+            <a href="?page=1">1</a>
+            <a>...</a>
+        {% endif %}
+        {% for i  in rangeLeft %}
+            <a href="?page={{ i }}">{{ i }}</a>
+        {% endfor %}
+        <a class="active" href="#">{{items.number}}</a>
+        {% for i in rangeRight %}
+            <a href='?page={{ i }}'>{{ i }}</a>
+        {% endfor %}
+        {% if rightUpperBound < items.paginator.num_pages %}
+            <a>...</a>
+            <a href="?page={{ items.paginator.num_pages }}">{{ items.paginator.num_pages }}</a>
+        {% endif %}
+      </li>
+      <li>
+        {% if items.has_next %}
+            <a href="?page={{items.next_page_number}}">»</a>
+        {% endif %}
+      </li>
+    </ul>    
+    {% endif %}
 </body>
 </html>

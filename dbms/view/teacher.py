@@ -3,6 +3,7 @@ from django.shortcuts import render,redirect
 from django.db import connection
 from django.http import HttpResponse
 from django.contrib import messages
+from dbms.view.pageholder import pageBuilder
 
 def teacher(request):#个人信息
     return render(request,'teacher.html')
@@ -29,6 +30,7 @@ def indexTeacher(request):#查询教师个人信息
 
 def indexTCourse(request):#查询所授课程信息
     print("查询教师教授的课程")
+    page=request.GET.get('page',1)
     if 'sessionid' in request.COOKIES and request.session['role'] == 'teacher':
         teacher_id = request.session['id']
         connection.connect()
@@ -41,16 +43,14 @@ def indexTCourse(request):#查询所授课程信息
         result_list = []
         for r in result:
             result_list.append({"course_id":r[0],'course_name':r[1],'credits':r[2]})
-        for i in range(0, len(result_list)):
-            print("课程ID:%s 课程名:%s 学分:%f" % (result_list[i]['course_id'], result_list[i]['course_name']
-                                            , result_list[i]['credits']))
-        return render(request, 'teacher2.html', {"data": result_list})
+        return render(request, 'teacher2.html', pageBuilder(result_list,page))
     else:
         print("用户身份不合法")
         return redirect('/pro/illegalUser/')
 
 def indexTGrade(request):#查询所授课程学生成绩信息
     print("查询学生的成绩")
+    page=request.GET.get('page',1)
     if 'sessionid' in request.COOKIES and request.session['role'] == 'teacher':
         teacher_id = request.session['id']
         connection.connect()
@@ -64,10 +64,7 @@ def indexTGrade(request):#查询所授课程学生成绩信息
         for r in result:
             result_list.append({"student_id":r[0],'student_name':r[1],'course_id':r[2],\
                                 'course_name':r[3],'credits':r[4],'grade':r[5]})
-        for i in range(0,len(result_list)):
-            print("学生ID:%s 学生姓名:%s 课程ID:%s 课程名:%s 学分:%f 成绩：%f" % (result_list[i]['student_id'], result_list[i]['student_name']
-            , result_list[i]['course_id'], result_list[i]['course_name'], result_list[i]['credits'],result_list[i]['grade']))
-        return render(request, 'teacher3.html',{"data": result_list})
+        return render(request, 'teacher3.html',pageBuilder(result_list,page))
     else:
         print("用户身份不合法")
         return redirect('/pro/illegalUser/')

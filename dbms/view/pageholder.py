@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator,InvalidPage,EmptyPage,PageNotAnInteger
 
-Capacity=5
+Capacity=15
 pages=7
 leftneibor=2
 rightneibor=3
@@ -45,8 +45,13 @@ def pageBuilder(data,page):
     leftUpperBound=page-1
     rightLowerBound=page+1
     rightUpperBound=page+right
-    if(rightUpperBound>20):
-        rightUpperBound=20
+    if(rightUpperBound>pagenator.num_pages):
+        rightUpperBound=pagenator.num_pages
+
+    if(pagenator.num_pages==1):
+        ifsetPage=False
+    else:
+        ifsetPage=True
 
     print("leftLowerBound:{}  leftUpperBound:{} rightLowerBound:{} rightUpperBound:{}".format(
                 leftLowerBound,leftUpperBound,rightLowerBound,rightUpperBound
@@ -61,6 +66,7 @@ def pageBuilder(data,page):
         "rightUpperBound":rightUpperBound,
         "rangeLeft":rangeLeft,
         "rangeRight":rangeRight,
+        'ifsetPage':ifsetPage,
     }    
 
     return context
