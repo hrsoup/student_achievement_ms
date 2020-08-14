@@ -2,6 +2,7 @@
 from django.shortcuts import render,redirect
 from django.db import connection
 from django.http import HttpResponse
+from django.contrib import messages
 
 def teacher(request):#个人信息
     return render(request,'teacher.html')
@@ -77,26 +78,82 @@ def changeTGrade(request):#录入、删除、修改所授课程学生成绩信�
         connection.connect()
         cursor = connection.cursor()
         operation = request.POST.get('my_select')
+        student_id = request.POST.get('student_id')
+        course_id = request.POST.get('course_id')
+
+        cursor.execute("select * from student where student_id = '%s' " % (student_id))
+        student = cursor.fetchall()
+        cursor.execute("select * from course where course_id = '%s' " % (course_id))
+        course = cursor.fetchall()
 
         if operation == 'add': #录入
-            student_id = request.POST.get('student_id')
-            course_id = request.POST.get('course_id')
             grade = int(request.POST.get('grade'))
-            cursor.execute('insert into take values \
-                            ("%s", "%s", %d)' % (student_id, course_id, grade))
+            cursor.execute("select * from take where course_id = '%s' and student_id = '%s'" % (course_id, student_id))
+            grades = cursor.fetchall()
+            error_count = 0 
+            if len(student) == 0:
+                print("该学生不存在")
+                messages.success(request,"该学生不存在")
+                error_count += 1
+            if len(course) == 0:
+                print("该课程不存在")
+                messages.success(request,"该课程不存在") 
+                error_count += 1
+            if len(grades) !=0:
+                print("该学生此门课成绩已录入")  
+                messages.success(request,"该学生此门课成绩已录入") 
+                error_count += 1         
+            if (grade < 0) or (grade > 100):
+                print("请输入0到100之间的数字")    
+                messages.success(request,"请输入0到100之间的数字")
+                error_count += 1  
+            if error_count == 0:
+                cursor.execute('insert into take values \
+                                ("%s", "%s", %d)' % (student_id, course_id, grade))
 
         elif operation == 'update': #修改
-            student_id = request.POST.get('student_id')
-            course_id = request.POST.get('course_id')
             grade = int(request.POST.get('grade'))
-            cursor.execute('update take set \
-                            grade = %d where (student_id = "%s") and (course_id = "%s")' % (grade, student_id, course_id))
+            cursor.execute("select * from take where course_id = '%s' and student_id = '%s'" % (course_id, student_id))
+            grades = cursor.fetchall()
+            error_count = 0 
+            if len(student) == 0:
+                print("该学生不存在")
+                messages.success(request,"该学生不存在")
+                error_count += 1
+            if len(course) == 0:
+                print("该课程不存在")
+                messages.success(request,"该课程不存在") 
+                error_count += 1
+            if len(grades) !=0 and (error_count == 0):
+                print("该学生没有上此门课程")  
+                messages.success(request,"该学生没有上此门课程") 
+                error_count += 1         
+            if (grade < 0) or (grade > 100):
+                print("请输入0到100之间的数字")    
+                messages.success(request,"请输入0到100之间的数字")
+                error_count += 1  
+            if error_count == 0:
+                cursor.execute('update take set \
+                                grade = %d where (student_id = "%s") and (course_id = "%s")' % (grade, student_id, course_id))
 
         elif operation == 'delete': #删除
-            student_id = request.POST.get('student_id')
-            course_id = request.POST.get('course_id')
-            cursor.execute('delete from take where student_id = "%s" and course_id = "%s"' % (student_id, course_id))
-
+            cursor.execute("select * from take where course_id = '%s' and student_id = '%s'" % (course_id, student_id))
+            grades = cursor.fetchall()
+            error_count = 0 
+            if len(student) == 0:
+                print("该学生不存在")
+                messages.success(request,"该学生不存在")
+                error_count += 1
+            if len(course) == 0:
+                print("该课程不存在")
+                messages.success(request,"该课程不存在") 
+                error_count += 1
+            if len(grades) !=0 and (error_count == 0):
+                print("该学生没有上此门课程")  
+                messages.success(request,"该学生没有上此门课程") 
+                error_count += 1    
+            if error_count == 0:
+                cursor.execute('delete from take where student_id = "%s" and course_id = "%s"' % (student_id, course_id))
 
         cursor.execute("select take.student_id,student_name,take.course_id,course_name,credits,grade \
                         from student natural join course natural join take natural join teach \

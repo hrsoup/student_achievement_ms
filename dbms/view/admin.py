@@ -2,6 +2,7 @@
 from django.shortcuts import render,redirect
 from django.db import connection
 from django.http import HttpResponse
+from django.contrib import messages
 
 def admin(request): #个人信息
     return render(request,'admin.html')
@@ -93,26 +94,67 @@ def changeAllStu(request):#录入、删除、修改学生信息
         connection.connect()
         cursor = connection.cursor()
         operation = request.POST.get('my_select')
+        student_id = request.POST.get('student_id')
+
+        cursor.execute("select * from student where student_id = '%s' " % (student_id))
+        student = cursor.fetchall()
 
         if operation == 'add': #录入
-            student_id = request.POST.get('student_id')
             password = request.POST.get('password')
             student_name = request.POST.get('student_name')
             class_id = request.POST.get('class_id')
-            cursor.execute('insert into student values \
-                            ("%s", md5("%s"), "%s", "%s")' % (student_id, password, student_name, class_id))
+
+            cursor.execute("select * from class where class_id = '%s' " % (class_id))
+            Class = cursor.fetchall()
+
+            error_count = 0
+            if len(student) != 0:
+                print("此学生ID已经存在")
+                messages.success(request,"此学生ID已经存在")
+                error_count += 1
+            if len(Class) == 0:
+                print("该班级不存在")
+                messages.success(request,"该班级不存在") 
+                error_count += 1     
+            if error_count == 0:  
+                cursor.execute('insert into student values \
+                                ("%s", md5("%s"), "%s", "%s")' % (student_id, password, student_name, class_id))
 
         elif operation == 'update': #修改
-            student_id = request.POST.get('student_id')
-            password = (request.POST.get('password'))
+            password = request.POST.get('password')
             student_name = request.POST.get('student_name')
             class_id = request.POST.get('class_id')
-            cursor.execute('update student set password = md5("%s"), student_name = "%s", class_id = "%s" where \
+
+            cursor.execute("select * from class where class_id = '%s' " % (class_id))
+            Class = cursor.fetchall()
+            cursor.execute("select * from student where student_id = '%s' and class_id = '%s'" % (student_id, class_id))
+            stu_class = cursor.fetchall()
+
+            error_count = 0
+            if len(student) == 0:
+                print("此学生ID不存在")
+                messages.success(request,"此学生ID不存在")
+                error_count += 1
+            if len(Class) == 0:
+                print("该班级不存在")
+                messages.success(request,"该班级不存在") 
+                error_count += 1     
+            if len(stu_class) !=0 and (error_count == 0):
+                print("该学生不在此班级中")  
+                messages.success(request,"该学生不在此班级中") 
+                error_count += 1                    
+            if error_count == 0:  
+                cursor.execute('update student set password = md5("%s"), student_name = "%s", class_id = "%s" where \
                             student_id = "%s"' % (password, student_name, class_id, student_id))
 
         elif operation == 'delete': #删除
-            student_id = request.POST.get('student_id')
-            cursor.execute('delete from student where student_id = "%s"' % (student_id))
+            error_count = 0
+            if len(student) == 0:
+                print("此学生ID不存在")
+                messages.success(request,"此学生ID不存在")
+                error_count += 1
+            if error_count == 0:
+                cursor.execute('delete from student where student_id = "%s"' % (student_id))
 
         cursor.execute("select student.student_id,password,student_name,dept,major,class.class_id \
                         from student natural join class;")
@@ -138,26 +180,46 @@ def changeAllTeacher(request):#录入、删除、修改教师信息
         connection.connect()
         cursor = connection.cursor()
         operation = request.POST.get('my_select')
+        teacher_id = request.POST.get('teacher_id')
+        cursor.execute("select * from teacher where teacher_id = '%s' " % (teacher_id))
+        teacher = cursor.fetchall()
 
         if operation == 'add': #录入
-            teacher_id = request.POST.get('teacher_id')
             password = request.POST.get('password')
             teacher_name = request.POST.get('teacher_name')
             dept = request.POST.get('dept')
-            cursor.execute('insert into teacher values \
+
+            error_count = 0
+            if len(teacher) != 0:
+                print("此教师ID已经存在")
+                messages.success(request,"此教师ID已经存在")
+                error_count += 1
+            if error_count == 0:  
+                cursor.execute('insert into teacher values \
                             ("%s", md5("%s"), "%s", "%s")' % (teacher_id, password, teacher_name, dept))
 
         elif operation == 'update': #修改
-            teacher_id = request.POST.get('teacher_id')
             password = request.POST.get('password')
             teacher_name = request.POST.get('teacher_name')
             dept = request.POST.get('dept')
-            cursor.execute('update teacher set password = md5("%s"), teacher_name = "%s", dept = "%s" \
+
+            error_count = 0
+            if len(teacher) == 0:
+                print("此教师ID不存在")
+                messages.success(request,"此教师ID不存在")
+                error_count += 1 
+            if error_count == 0:  
+                cursor.execute('update teacher set password = md5("%s"), teacher_name = "%s", dept = "%s" \
                             where teacher_id = "%s"' % (password, teacher_name, dept, teacher_id))
 
         elif operation == 'delete': #删除
-            teacher_id = request.POST.get('teacher_id')
-            cursor.execute('delete from teacher where teacher_id = "%s"' % (teacher_id))
+            error_count = 0
+            if len(teacher) == 0:
+                print("此教师ID不存在")
+                messages.success(request,"此教师ID不存在")
+                error_count += 1
+            if error_count == 0:  
+                cursor.execute('delete from teacher where teacher_id = "%s"' % (teacher_id))
 
         cursor.execute("select * from teacher;")
         result = cursor.fetchall()
@@ -180,24 +242,50 @@ def changeAllCourse(request):#录入、删除、修改课程信息
         connection.connect()
         cursor = connection.cursor()
         operation = request.POST.get('my_select')
+        course_id = request.POST.get('course_id')
+
+        cursor.execute("select * from course where course_id = '%s' " % (course_id))
+        course = cursor.fetchall()
 
         if operation == 'add': #录入
-            course_id = request.POST.get('course_id')
             course_name = request.POST.get('course_name')
             credit = int(request.POST.get('credits'))
-            cursor.execute('insert into course values \
+            error_count = 0
+            if len(course) != 0:
+                print("此课程ID已经存在")
+                messages.success(request,"此课程ID已经存在")
+                error_count += 1
+            if error_count == 0: 
+                cursor.execute('insert into course values \
                             ("%s", "%s", %d)' % (course_id, course_name, credit))
 
         elif operation == 'update': #修改
-            course_id = request.POST.get('course_id')
             course_name = request.POST.get('course_name')
             credit = int(request.POST.get('credits'))
-            cursor.execute('update course set course_name = "%s", credits = %d where \
+            cursor.execute("select * from course where course_id = '%s' and course_name = '%s' " % (course_id, course_name))
+            class_course = cursor.fetchall()
+
+            error_count = 0
+            if len(course) == 0:
+                print("此课程ID不存在")
+                messages.success(request,"此课程ID不存在")
+                error_count += 1
+            if len(class_course) == 0 and error_count == 0:
+                print("此课程ID与课程名不对应")
+                messages.success(request,"此课程ID与课程名不对应")
+                error_count += 1                
+            if error_count == 0: 
+                cursor.execute('update course set course_name = "%s", credits = %d where \
                             course_id = "%s"' % (course_name, credit, course_id))
 
         elif operation == 'delete': #删除
-            course_id = request.POST.get('course_id')
-            cursor.execute('delete from course where course_id = "%s"' % (course_id))
+            error_count = 0
+            if len(course) == 0:
+                print("此课程ID不存在")
+                messages.success(request,"此课程ID不存在")
+                error_count += 1
+            if error_count == 0: 
+                cursor.execute('delete from course where course_id = "%s"' % (course_id))
 
         cursor.execute("select * from course;")
         result = cursor.fetchall()
@@ -239,24 +327,41 @@ def changeallClass(request):#录入、删除、修改班级信息
         connection.connect()
         cursor = connection.cursor()
         operation = request.POST.get('my_select')
+        class_id = request.POST.get('class_id')
+        dept = request.POST.get('dept')
+        major = request.POST.get('major')
+
+        cursor.execute("select * from class where class_id = '%s' " % (class_id))
+        Class = cursor.fetchall()
 
         if operation == 'add': #录入
-            class_id = request.POST.get('class_id')
-            dept = request.POST.get('dept')
-            major = request.POST.get('major')
-            cursor.execute('insert into class values \
+            error_count = 0
+            if len(Class) != 0:
+                print("此班级ID已经存在")
+                messages.success(request,"此班级ID已经存在")
+                error_count += 1
+            if error_count == 0: 
+                cursor.execute('insert into class values \
                             ("%s", "%s", "%s")' % (class_id, dept, major))
 
         elif operation == 'update': #修改
-            class_id = request.POST.get('class_id')
-            dept = request.POST.get('dept')
-            major = request.POST.get('major')
-            cursor.execute('update class set dept = "%s", major = "%s" where \
+            error_count = 0
+            if len(Class) == 0:
+                print("此班级ID不存在")
+                messages.success(request,"此班级ID不存在")
+                error_count += 1
+            if error_count == 0: 
+                cursor.execute('update class set dept = "%s", major = "%s" where \
                             class_id = "%s"' % (dept, major, class_id))
 
         elif operation == 'delete': #删除
-            class_id = request.POST.get('class_id')
-            cursor.execute('delete from class where class_id = "%s"' % (class_id))
+            error_count = 0
+            if len(Class) == 0:
+                print("此班级ID不存在")
+                messages.success(request,"此班级ID不存在")
+                error_count += 1
+            if error_count == 0: 
+                cursor.execute('delete from class where class_id = "%s"' % (class_id))
 
         cursor.execute("select * from class")
         result = cursor.fetchall()
