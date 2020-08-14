@@ -25,4 +25,6 @@ urlpatterns = [
     path('changeAllStu', admin.changeAllStu),
     path('changeAllTeacher', admin.changeAllTeacher),
     path('changeAllCourse', admin.changeAllCourse),
+    path('indexAllClass', admin.indexAllClass),
+    path('changeAllCourse', admin.changeAllCourse)
 ]

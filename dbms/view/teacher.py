@@ -83,7 +83,7 @@ def changeTGrade(request):#录入、删除、修改所授课程学生成绩信�
             course_id = request.POST.get('course_id')
             grade = int(request.POST.get('grade'))
             cursor.execute('insert into take values \
-                            ("%s", "%s", %s)' % (student_id, course_id, grade))
+                            ("%s", "%s", %d)' % (student_id, course_id, grade))
 
         elif operation == 'update': #修改
             student_id = request.POST.get('student_id')

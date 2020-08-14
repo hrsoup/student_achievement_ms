@@ -96,18 +96,18 @@ def changeAllStu(request):#录入、删除、修改学生信息
 
         if operation == 'add': #录入
             student_id = request.POST.get('student_id')
-            password = int(request.POST.get('password'))
+            password = request.POST.get('password')
             student_name = request.POST.get('student_name')
             class_id = request.POST.get('class_id')
             cursor.execute('insert into student values \
-                            ("%s", md5(%s), "%s", "%s")' % (student_id, password, student_name, class_id))
+                            ("%s", md5("%s"), "%s", "%s")' % (student_id, password, student_name, class_id))
 
         elif operation == 'update': #修改
             student_id = request.POST.get('student_id')
-            password = int(request.POST.get('password'))
+            password = (request.POST.get('password'))
             student_name = request.POST.get('student_name')
             class_id = request.POST.get('class_id')
-            cursor.execute('update student set password = md5(%s), student_name = "%s", class_id = "%s" where \
+            cursor.execute('update student set password = md5("%s"), student_name = "%s", class_id = "%s" where \
                             student_id = "%s"' % (password, student_name, class_id, student_id))
 
         elif operation == 'delete': #删除
@@ -141,18 +141,18 @@ def changeAllTeacher(request):#录入、删除、修改教师信息
 
         if operation == 'add': #录入
             teacher_id = request.POST.get('teacher_id')
-            password = int(request.POST.get('password'))
+            password = request.POST.get('password')
             teacher_name = request.POST.get('teacher_name')
             dept = request.POST.get('dept')
             cursor.execute('insert into teacher values \
-                            ("%s", md5(%s), "%s", "%s")' % (teacher_id, password, teacher_name, dept))
+                            ("%s", md5("%s"), "%s", "%s")' % (teacher_id, password, teacher_name, dept))
 
         elif operation == 'update': #修改
             teacher_id = request.POST.get('teacher_id')
-            password = int(request.POST.get('password'))
+            password = request.POST.get('password')
             teacher_name = request.POST.get('teacher_name')
             dept = request.POST.get('dept')
-            cursor.execute('update teacher set password = md5(%s), teacher_name = "%s", dept = "%s" \
+            cursor.execute('update teacher set password = md5("%s"), teacher_name = "%s", dept = "%s" \
                             where teacher_id = "%s"' % (password, teacher_name, dept, teacher_id))
 
         elif operation == 'delete': #删除
@@ -186,13 +186,13 @@ def changeAllCourse(request):#录入、删除、修改课程信息
             course_name = request.POST.get('course_name')
             credit = int(request.POST.get('credits'))
             cursor.execute('insert into course values \
-                            ("%s", "%s", %s)' % (course_id, course_name, credit))
+                            ("%s", "%s", %d)' % (course_id, course_name, credit))
 
         elif operation == 'update': #修改
             course_id = request.POST.get('course_id')
             course_name = request.POST.get('course_name')
             credit = int(request.POST.get('credits'))
-            cursor.execute('update course set course_name = "%s", credits = %s where \
+            cursor.execute('update course set course_name = "%s", credits = %d where \
                             course_id = "%s"' % (course_name, credit, course_id))
 
         elif operation == 'delete': #删除
@@ -209,6 +209,65 @@ def changeAllCourse(request):#录入、删除、修改课程信息
             print("课程ID:%s 课程名:%s 学分:%d" % (result_list[i]['course_id'], result_list[i]['course_name']
                                             , result_list[i]['credits']))
         return render(request, 'admin4.html', {"data": result_list})
+    else:
+        print("用户身份不合法")
+        return redirect('/pro/illegalUser/')
+
+def indexAllClass(request):#查询班级信息
+    print("查询所有班级信息")
+    if 'sessionid' in request.COOKIES and request.session['role'] == 'admin':
+        teacher_id = request.session['id']
+        connection.connect()
+        cursor = connection.cursor()
+        cursor.execute("select * from class")
+        result = cursor.fetchall()
+        connection.close()
+        result_list = []
+        for r in result:
+            result_list.append({"class_id":r[0],'dept':r[1],'major':r[2]})
+        for i in range(0, len(result_list)):
+            print("班级ID:%s 院系:%s 专业:%s" % (result_list[i]['class_id'], result_list[i]['dept']
+                                            , result_list[i]['major']))
+        return render(request, 'admin5.html', {"data": result_list})
+    else:
+        print("用户身份不合法")
+        return redirect('/pro/illegalUser/')
+
+def changeAllCourse(request):#录入、删除、修改班级信息
+    if 'sessionid' in request.COOKIES and request.session['role'] == 'admin':
+        teacher_id = request.session['id']
+        connection.connect()
+        cursor = connection.cursor()
+        operation = request.POST.get('my_select')
+
+        if operation == 'add': #录入
+            class_id = request.POST.get('class_id')
+            dept = request.POST.get('dept')
+            major = request.POST.get('major')
+            cursor.execute('insert into class values \
+                            ("%s", "%s", "%s")' % (class_id, dept, major))
+
+        elif operation == 'update': #修改
+            class_id = request.POST.get('class_id')
+            dept = request.POST.get('dept')
+            major = request.POST.get('major')
+            cursor.execute('update class set class_id = "%s", dept = "%s" where \
+                            major = "%s"' % (class_id, credit, course_id))
+
+        elif operation == 'delete': #删除
+            class_id = request.POST.get('class_id')
+            cursor.execute('delete from class where class_id = "%s"' % (class_id))
+
+        cursor.execute("select * from class")
+        result = cursor.fetchall()
+        connection.close()
+        result_list = []
+        for r in result:
+            result_list.append({"class_id":r[0],'dept':r[1],'major':r[2]})
+        for i in range(0, len(result_list)):
+            print("班级ID:%s 院系:%s 专业:%s" % (result_list[i]['class_id'], result_list[i]['dept']
+                                            , result_list[i]['major']))
+        return render(request, 'admin5.html', {"data": result_list})
     else:
         print("用户身份不合法")
         return redirect('/pro/illegalUser/')
