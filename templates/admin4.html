@@ -58,13 +58,13 @@
        box-shadow: 0px 15px 25px rgba(0,0,0,.5);
       }
 
-      .selectbar input{
+       .selectbar input{
           background-color: #ff7f00;
           position:absolute;
-          margin-top:70px;
+          margin-top:5px;
           margin-left:50px;
           color: black;
-          padding: 15px 32px;
+          padding: 8px 25px;
           text-align: center;
           text-decoration: none;
           display: inline-block;
@@ -186,6 +186,11 @@
  }
     </style>
     <script>
+         {% if messages %}
+            {% for msg in messages %}
+                alert('{{ msg}}');
+            {% endfor %}
+        {% endif %}
     </script>
 </head>
 <body>
@@ -205,6 +210,8 @@
         <input type="button" name="tea_info" value="教师信息" onclick="location.href='/pro/indexAllTeacher'"><br><br><br><br>
         <input type="button" name="course_info" value="课程信息" onclick="location.href='/pro/indexAllCourse'"><br><br><br><br>
         <input type="button" name="class_info" value="班级信息" onclick="location.href='/pro/indexAllClass'"><br><br><br><br>
+        <input type="button" name="course_take" value="学生选课" onclick="location.href='/pro/indexAlltake'"><br><br><br><br>
+        <input type="button" name="course_teach" value="教师授课" onclick="location.href='/pro/indexAllteach'"><br><br><br><br>
         <input type="button" name="login_off" value="退出系统" onclick="location.href='/pro/logout'"><br><br><br><br>
     </div>
     <div class="tableblock">

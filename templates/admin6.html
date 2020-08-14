@@ -3,7 +3,7 @@
 {% load static %}
 <head>
     <meta charset="UTF-8">
-    <title>学生信息</title>
+    <title>课程信息</title>
      <style>
       body{
        margin:0px;
@@ -99,7 +99,8 @@
        background-image:url({% static 'images/background.jpg' %});
        background-size: cover;
       }
-      .mainblock{
+
+   .mainblock{
      position:absolute;
      top:364px;
      left:1385px;
@@ -129,7 +130,7 @@
      font-size:16px;
      color:#fff;
      letter-spacing: 1px;
-     margin-bottom: 25px;
+     margin-bottom: 30px;
      border:none;
      border-bottom: 1px solid #fff;
      outline:none;
@@ -145,6 +146,7 @@
      pointer-events:none;
      transition:.5s;
  }
+
  .mainblock .inputbox input:focus ~ label,
  .mainblock .inputbox input:valid ~ label
  {
@@ -158,12 +160,12 @@
  {
      width: 200px;
      position:absolute;
-     top:380px;
+     top:320px;
      left:36px;
      padding:10px 0;
      font-size:16px;
      color:orange;
-     margin-bottom: 50px;
+     margin-bottom: 100px;
      background: transparent;
  }
 
@@ -172,12 +174,12 @@
      width:120px;
      height:40px;
      position:absolute;
-     top:440px;
+     top:400px;
      left:80px;
      font-size:15px;
      border:none;
      outline:none;
-     color:#fff;
+     color:white;
      background-color: red;
      padding:15px 32px;
      cursor: pointer;
@@ -216,54 +218,42 @@
     <div class="tableblock">
         <table height="50px" width="1027px" border="5">
         <tr>
-            <th>学生ID</th>
-            <th>登录密码</th>
-            <th>姓名</th>
-            <th>所在学院</th>
-            <th>所在专业</th>
-            <th>所在班级</th>
+            <th>班级ID</th>
+            <th>院系</th>
+            <th>专业</th>
         </tr>
             {%for temp in data%}
             <tr>
-                <td>{{temp.student_id}}</td>
-                <td>{{temp.password}}</td>
-                <td>{{temp.student_name}}</td>
-                <td>{{temp.dept}}</td>
-                <td>{{temp.major}}</td>
-                <td>{{temp.class_id}}</td>
+            <td>{{temp.class_id}}</td>
+            <td>{{temp.dept}}</td>
+            <td>{{temp.major}}</td>
             </tr>
             {% endfor %}
         </table>
     </div>
      <div class="mainblock">
          <h2>请选择功能并给定数据</h2>
-         <form name="my_form" action="/pro/changeAllStu" method="post">
+         <form name="my_form" action="/pro/changealltake" method="post">
              {% csrf_token %}
              <div class="selectbox">
                <select name="my_select">
-                   <option value = "add">录入学生信息</option>
-                   <option value = "delete">删除学生信息</option>
-                   <option value = "update">修改学生信息</option>
+                   <option value = "add">录入学生选课信息</option>
+                   <option value = "delete">删除学生选课信息</option>
+                   <option value = "update">修改学生选课信息</option>
                </select>
              </div>
              <div class="inputbox">
-                 <input type="text" name="student_id" required="">
+                 <input type="text" name="class_id" required="" >
                  <label>学生ID</label>
              </div>
              <div class="inputbox">
-                 <input type="text" name="password">
-                 <label>登录密码</label>
-             </div>
-             <div class="inputbox">
-                 <input type="text" name="student_name" >
-                 <label>姓名</label>
-             </div>
-             <div class="inputbox">
-                 <input type="text" name="class_id" >
-                 <label>所在班级</label>
+                 <input type="text" name="dept">
+                 <label>课程ID</label>
              </div>
              <div class="submit">
                <input type="submit" name="execute" value="确定" >
+             </div>
+              <div class="submit">
              </div>
          </form>
     </div>

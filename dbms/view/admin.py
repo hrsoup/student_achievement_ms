@@ -392,3 +392,9 @@ def changeallClass(request):#录入、删除、修改班级信息
     else:
         print("用户身份不合法")
         return redirect('/pro/illegalUser/')
+
+
+#def indexAlltake(request):#查询学生选课信息
+#def changeAlltake(request):#录入、查询、修改学生选课信息
+#def indexAllteach(request):#查询教师授课信息
+#def changeAllteach(request):#录入、查询、修改教师授课信息

@@ -186,6 +186,11 @@
  }
     </style>
     <script>
+        {% if messages %}
+            {% for msg in messages %}
+                alert('{{ msg}}');
+            {% endfor %}
+        {% endif %}
     </script>
 </head>
 <body>
