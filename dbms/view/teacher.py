@@ -42,7 +42,7 @@ def indexTCourse(request):#查询所授课程信息
         for r in result:
             result_list.append({"course_id":r[0],'course_name':r[1],'credits':r[2]})
         for i in range(0, len(result_list)):
-            print("课程ID:%s 课程名:%s 学分:%d" % (result_list[i]['course_id'], result_list[i]['course_name']
+            print("课程ID:%s 课程名:%s 学分:%f" % (result_list[i]['course_id'], result_list[i]['course_name']
                                             , result_list[i]['credits']))
         return render(request, 'teacher2.html', {"data": result_list})
     else:
@@ -65,12 +65,18 @@ def indexTGrade(request):#查询所授课程学生成绩信息
             result_list.append({"student_id":r[0],'student_name':r[1],'course_id':r[2],\
                                 'course_name':r[3],'credits':r[4],'grade':r[5]})
         for i in range(0,len(result_list)):
-            print("学生ID:%s 学生姓名:%s 课程ID:%s 课程名:%s 学分:%d 成绩：%d" % (result_list[i]['student_id'], result_list[i]['student_name']
+            print("学生ID:%s 学生姓名:%s 课程ID:%s 课程名:%s 学分:%f 成绩：%f" % (result_list[i]['student_id'], result_list[i]['student_name']
             , result_list[i]['course_id'], result_list[i]['course_name'], result_list[i]['credits'],result_list[i]['grade']))
         return render(request, 'teacher3.html',{"data": result_list})
     else:
         print("用户身份不合法")
         return redirect('/pro/illegalUser/')
+
+def ifdigit(number):
+    if type(eval(number)) != int and type(eval(number)) != float:
+        return False
+    else:
+        return True
 
 def changeTGrade(request):#录入、删除、修改所授课程学生成绩信息
     if 'sessionid' in request.COOKIES and request.session['role'] == 'teacher':
@@ -87,7 +93,7 @@ def changeTGrade(request):#录入、删除、修改所授课程学生成绩信�
         course = cursor.fetchall()
 
         if operation == 'add': #录入
-            grade = int(request.POST.get('grade'))
+            grade = request.POST.get('grade')
             cursor.execute("select * from take where course_id = '%s' and student_id = '%s'" % (course_id, student_id))
             grades = cursor.fetchall()
             error_count = 0 
@@ -103,16 +109,17 @@ def changeTGrade(request):#录入、删除、修改所授课程学生成绩信�
                 print("该学生此门课成绩已录入")  
                 messages.error(request,"该学生此门课成绩已录入") 
                 error_count += 1         
-            elif (grade < 0) or (grade > 100):
+            elif (ifdigit(grade) == False) or ((ifdigit(grade) == True) and ((float(grade) < 0) or (float(grade) > 100))):
                 print("请输入0到100之间的数字")    
                 messages.error(request,"请输入0到100之间的数字")
                 error_count += 1  
             elif error_count == 0:
+                grade = float(grade)
                 cursor.execute('insert into take values \
-                                ("%s", "%s", %d)' % (student_id, course_id, grade))
+                                ("%s", "%s", "%f")' % (student_id, course_id, grade))
 
         elif operation == 'update': #修改
-            grade = int(request.POST.get('grade'))
+            grade = request.POST.get('grade')
             cursor.execute("select * from take where course_id = '%s' and student_id = '%s'" % (course_id, student_id))
             grades = cursor.fetchall()
             error_count = 0 
@@ -124,17 +131,18 @@ def changeTGrade(request):#录入、删除、修改所授课程学生成绩信�
                 print("该课程不存在")
                 messages.error(request,"该课程不存在") 
                 error_count += 1
-            elif len(grades) !=0 and (error_count == 0):
+            elif len(grades) ==0 and (error_count == 0):
                 print("该学生没有上此门课程")  
                 messages.error(request,"该学生没有上此门课程") 
                 error_count += 1         
-            elif (grade < 0) or (grade > 100):
+            elif (ifdigit(grade) == False) or ((ifdigit(grade) == True) and ((float(grade) < 0) or (float(grade) > 100))):
                 print("请输入0到100之间的数字")    
                 messages.error(request,"请输入0到100之间的数字")
                 error_count += 1  
             elif error_count == 0:
+                grade = float(grade)
                 cursor.execute('update take set \
-                                grade = %d where (student_id = "%s") and (course_id = "%s")' % (grade, student_id, course_id))
+                                grade = "%f" where (student_id = "%s") and (course_id = "%s")' % (grade, student_id, course_id))
 
         elif operation == 'delete': #删除
             cursor.execute("select * from take where course_id = '%s' and student_id = '%s'" % (course_id, student_id))
@@ -148,7 +156,7 @@ def changeTGrade(request):#录入、删除、修改所授课程学生成绩信�
                 print("该课程不存在")
                 messages.error(request,"该课程不存在") 
                 error_count += 1
-            elif len(grades) !=0 and (error_count == 0):
+            elif len(grades) ==0 and (error_count == 0):
                 print("该学生没有上此门课程")  
                 messages.error(request,"该学生没有上此门课程") 
                 error_count += 1    
@@ -165,7 +173,7 @@ def changeTGrade(request):#录入、删除、修改所授课程学生成绩信�
             result_list.append({"student_id":r[0],'student_name':r[1],'course_id':r[2],\
                                 'course_name':r[3],'credits':r[4],'grade':r[5]})
         for i in range(0,len(result_list)):
-            print("学生ID:%s 学生姓名:%s 课程ID:%s 课程名:%s 学分:%d 成绩：%d" % (result_list[i]['student_id'], result_list[i]['student_name']
+            print("学生ID:%s 学生姓名:%s 课程ID:%s 课程名:%s 学分:%f 成绩：%f" % (result_list[i]['student_id'], result_list[i]['student_name']
             , result_list[i]['course_id'], result_list[i]['course_name'], result_list[i]['credits'],result_list[i]['grade']))
         return render(request, 'teacher3.html',{"data": result_list})
 

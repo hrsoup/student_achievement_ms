@@ -81,7 +81,7 @@ def indexAllCourse(request):#查询所有课程信息
         for r in result:
             result_list.append({"course_id":r[0],'course_name':r[1],'credits':r[2]})
         for i in range(0, len(result_list)):
-            print("课程ID:%s 课程名:%s 学分:%d" % (result_list[i]['course_id'], result_list[i]['course_name']
+            print("课程ID:%s 课程名:%s 学分:%f" % (result_list[i]['course_id'], result_list[i]['course_name']
                                             , result_list[i]['credits']))
         return render(request, 'admin4.html', {"data": result_list})
     else:
@@ -139,7 +139,7 @@ def changeAllStu(request):#录入、删除、修改学生信息
                 print("该班级不存在")
                 messages.error(request,"该班级不存在") 
                 error_count += 1     
-            elif len(stu_class) !=0 and (error_count == 0):
+            elif len(stu_class) == 0 and (error_count == 0):
                 print("该学生不在此班级中")  
                 messages.error(request,"该学生不在此班级中") 
                 error_count += 1                    
@@ -235,6 +235,11 @@ def changeAllTeacher(request):#录入、删除、修改教师信息
         print("用户身份不合法")
         return redirect('/pro/illegalUser/')
 
+def ifdigit(number):
+    if type(eval(number)) != int and type(eval(number)) != float:
+        return False
+    else:
+        return True
 
 def changeAllCourse(request):#录入、删除、修改课程信息
     if 'sessionid' in request.COOKIES and request.session['role'] == 'admin':
@@ -249,19 +254,24 @@ def changeAllCourse(request):#录入、删除、修改课程信息
 
         if operation == 'add': #录入
             course_name = request.POST.get('course_name')
-            credit = int(request.POST.get('credits'))
+            credit = request.POST.get('credits')
             error_count = 0
             if len(course) != 0:
                 print("此课程ID已经存在")
                 messages.error(request,"此课程ID已经存在")
                 error_count += 1
+            elif (ifdigit(credit) == False) or ((ifdigit(credit) == True) and (float(credit) < 0)):
+                print("您输入的学分不是大于0的数字！")    
+                messages.error(request,"您输入的学分不是大于0的数字！")
+                error_count += 1  
             elif error_count == 0: 
+                credit = float(credit)
                 cursor.execute('insert into course values \
-                            ("%s", "%s", %d)' % (course_id, course_name, credit))
+                            ("%s", "%s", "%f")' % (course_id, course_name, credit))
 
         elif operation == 'update': #修改
             course_name = request.POST.get('course_name')
-            credit = int(request.POST.get('credits'))
+            credit = request.POST.get('credits')
             cursor.execute("select * from course where course_id = '%s' and course_name = '%s' " % (course_id, course_name))
             class_course = cursor.fetchall()
 
@@ -273,9 +283,15 @@ def changeAllCourse(request):#录入、删除、修改课程信息
             elif len(class_course) == 0 and error_count == 0:
                 print("此课程ID与课程名不对应")
                 messages.error(request,"此课程ID与课程名不对应")
-                error_count += 1                
+                error_count += 1    
+            elif (ifdigit(credit) == False) or ((ifdigit(credit) == True) and (float(credit) < 0)):
+                print(float(credit))
+                print("您输入的学分不是大于0的数字！")    
+                messages.error(request,"您输入的学分不是大于0的数字！")
+                error_count += 1              
             elif error_count == 0: 
-                cursor.execute('update course set course_name = "%s", credits = %d where \
+                credit = float(credit)
+                cursor.execute('update course set course_name = "%s", credits = "%f" where \
                             course_id = "%s"' % (course_name, credit, course_id))
 
         elif operation == 'delete': #删除
@@ -294,7 +310,7 @@ def changeAllCourse(request):#录入、删除、修改课程信息
         for r in result:
             result_list.append({"course_id":r[0],'course_name':r[1],'credits':r[2]})
         for i in range(0, len(result_list)):
-            print("课程ID:%s 课程名:%s 学分:%d" % (result_list[i]['course_id'], result_list[i]['course_name']
+            print("课程ID:%s 课程名:%s 学分:%f" % (result_list[i]['course_id'], result_list[i]['course_name']
                                             , result_list[i]['credits']))
         return render(request, 'admin4.html', {"data": result_list})
     else:
