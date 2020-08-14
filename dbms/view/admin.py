@@ -235,11 +235,14 @@ def changeAllTeacher(request):#录入、删除、修改教师信息
         print("用户身份不合法")
         return redirect('/pro/illegalUser/')
 
-def ifdigit(number):
-    if type(eval(number)) != int and type(eval(number)) != float:
+def ifdigit(num):
+    if num.replace(".",'').isdigit():
+        if num.count(".")==0:
+            return True
+        elif num.count(".")==1:
+            return True
+    else: 
         return False
-    else:
-        return True
 
 def changeAllCourse(request):#录入、删除、修改课程信息
     if 'sessionid' in request.COOKIES and request.session['role'] == 'admin':
