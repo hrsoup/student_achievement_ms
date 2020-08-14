@@ -1,3 +1,0 @@
-#这部分是用于暂时存放前端新增加的接口函数，正式实现的时候把它们挪到各个子系统对应的py文件里
-from django.shortcuts import render,redirect
-from django.http import HttpResponse

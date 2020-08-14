@@ -1,5 +1,5 @@
 from django.urls import path
-from .view import add, admin, enroll, stat, student, teacher
+from .view import admin, enroll, stat, student, teacher
 urlpatterns = [
     path('welcome/',enroll.welcome),
     path('login/', enroll.login),

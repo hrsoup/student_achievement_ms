@@ -35,7 +35,8 @@ def indexAllStu(request):#查询所有学生信息
         connection.connect()
         cursor = connection.cursor()
         cursor.execute("select student.student_id,password,student_name,dept,major,class.class_id \
-                        from student natural join class;")
+                        from student natural join class \
+                        order by student.student_id, class.class_id;")
         result = cursor.fetchall()
         connection.close()
         result_list = []
@@ -54,7 +55,7 @@ def indexAllTeacher(request):#查询所有教师信息
         teacher_id = request.session['id']
         connection.connect()
         cursor = connection.cursor()
-        cursor.execute("select * from teacher;")
+        cursor.execute("select * from teacher order by teacher_id;")
         result = cursor.fetchall()
         connection.close()
         result_list = []
@@ -72,7 +73,7 @@ def indexAllCourse(request):#查询所有课程信息
         teacher_id = request.session['id']
         connection.connect()
         cursor = connection.cursor()
-        cursor.execute("select * from course;")
+        cursor.execute("select * from course order by course_id;")
         result = cursor.fetchall()
         connection.close()
         result_list = []
@@ -90,7 +91,7 @@ def indexAllClass(request):#查询班级信息
         teacher_id = request.session['id']
         connection.connect()
         cursor = connection.cursor()
-        cursor.execute("select * from class")
+        cursor.execute("select * from class order by class_id;")
         result = cursor.fetchall()
         connection.close()
         result_list = []
@@ -109,7 +110,8 @@ def indexAlltake(request):#查询学生选课信息
         connection.connect()
         cursor = connection.cursor()
         cursor.execute("select take.student_id, student_name, take.course_id, course_name from \
-                        take natural join student natural join course")
+                        take natural join student natural join course \
+                        order by take.student_id, take.course_id;")
         result = cursor.fetchall()
         connection.close()
         result_list = []
@@ -128,7 +130,8 @@ def indexAllteach(request):#查询教师授课信息
         connection.connect()
         cursor = connection.cursor()
         cursor.execute("select teach.teacher_id, teacher_name, teach.course_id, course_name from \
-                        teach natural join teacher natural join course")
+                        teach natural join teacher natural join course \
+                        order by teach.teacher_id, teach.course_id;")
         result = cursor.fetchall()
         connection.close()
         result_list = []
@@ -209,7 +212,8 @@ def changeAllStu(request):#录入、删除、修改学生信息
                 cursor.execute('delete from student where student_id = "%s"' % (student_id))
 
         cursor.execute("select student.student_id,password,student_name,dept,major,class.class_id \
-                        from student natural join class;")
+                        from student natural join class \
+                        order by student.student_id, class.class_id;")
         result = cursor.fetchall()
         connection.close()
         result_list = []
@@ -271,7 +275,7 @@ def changeAllTeacher(request):#录入、删除、修改教师信息
             elif error_count == 0:  
                 cursor.execute('delete from teacher where teacher_id = "%s"' % (teacher_id))
 
-        cursor.execute("select * from teacher;")
+        cursor.execute("select * from teacher order by teacher_id;")
         result = cursor.fetchall()
         connection.close()
         result_list = []
@@ -355,7 +359,7 @@ def changeAllCourse(request):#录入、删除、修改课程信息
             elif error_count == 0: 
                 cursor.execute('delete from course where course_id = "%s"' % (course_id))
 
-        cursor.execute("select * from course;")
+        cursor.execute("select * from course order by course_id;")
         result = cursor.fetchall()
         connection.close()
         result_list = []
@@ -409,7 +413,7 @@ def changeallClass(request):#录入、删除、修改班级信息
             elif error_count == 0: 
                 cursor.execute('delete from class where class_id = "%s"' % (class_id))
 
-        cursor.execute("select * from class")
+        cursor.execute("select * from class order by class_id;")
         result = cursor.fetchall()
         connection.close()
         result_list = []
@@ -486,7 +490,8 @@ def changealltake(request):#录入、查询、修改学生选课信息
                 cursor.execute('delete from take where student_id = "%s" and course_id = "%s"' % (student_id, course_id))
 
         cursor.execute("select take.student_id, student_name, take.course_id, course_name from \
-                        take natural join student natural join course")
+                        take natural join student natural join course \
+                        order by take.student_id, take.course_id;")
         result = cursor.fetchall()
         connection.close()
         result_list = []
@@ -561,7 +566,8 @@ def changeallteach(request):#录入、查询、修改教师授课信息
                 cursor.execute('delete from teach where teacher_id = "%s" and course_id = "%s"' % (teacher_id, course_id))
 
         cursor.execute("select teach.teacher_id, teacher_name, teach.course_id, course_name from \
-                        teach natural join teacher natural join course")
+                        teach natural join teacher natural join course \
+                        order by teach.teacher_id, teach.course_id;")
         result = cursor.fetchall()
         connection.close()
         result_list = []

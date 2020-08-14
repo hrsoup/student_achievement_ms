@@ -33,7 +33,8 @@ def indexSCourse(request):#查询所选课程信息
         cursor = connection.cursor()
         cursor.execute("select t.course_id,course_name,credits\
                         from take as t,course as c\
-                        where student_id=%s and t.course_id=c.course_id;",[request.session['id']])#根据具体学生id查询课程信息
+                        where student_id=%s and t.course_id=c.course_id \
+                        order by t.course_id;",[request.session['id']])#根据具体学生id查询课程信息
         tmp = ('course_id','course_name','credits')#返回的字段名
         result_list = []
         result = cursor.fetchone()
@@ -54,8 +55,8 @@ def indexSGPA(request):#查询选修成绩信息
         cursor = connection.cursor()
         cursor.execute("select t.course_id,course_name,grade\
                         from take as t,course as c\
-                        where student_id=%s and t.course_id=c.course_id;"\
-                        ,[request.session['id']])#根据具体学生id查询课程成绩列表
+                        where student_id=%s and t.course_id=c.course_id \
+                        order by t.course_id;",[request.session['id']])#根据具体学生id查询课程成绩列表
         result_list=[]
         result = cursor.fetchone()
         tmp=('course_id','course_name','grade')

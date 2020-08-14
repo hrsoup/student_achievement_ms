@@ -34,7 +34,8 @@ def indexTCourse(request):#查询所授课程信息
         cursor = connection.cursor()
         cursor.execute("select course.course_id,course_name,credits \
                         from course natural join teach \
-                        where teacher_id='%s'" % (teacher_id))
+                        where teacher_id='%s' \
+                        order by course.course_id;" % (teacher_id))
         result = cursor.fetchall()
         connection.close()
         result_list = []
@@ -54,7 +55,8 @@ def indexTGrade(request):#查询所授课程学生成绩信息
         cursor = connection.cursor()
         cursor.execute("select take.student_id,student_name,take.course_id,course_name,credits,grade \
                         from student natural join course natural join take natural join teach \
-                        where teacher_id ='%s'" % (teacher_id))
+                        where teacher_id ='%s' \
+                        order by take.student_id, take.course_id;" % (teacher_id))
         result = cursor.fetchall()
         connection.close()
         result_list = []
@@ -119,7 +121,8 @@ def changeTGrade(request):#录入、删除、修改所授课程学生成绩信�
 
         cursor.execute("select take.student_id,student_name,take.course_id,course_name,credits,grade \
                         from student natural join course natural join take natural join teach \
-                        where teacher_id ='%s'" % (teacher_id))
+                        where teacher_id ='%s' \
+                        order by take.student_id, take.course_id;" % (teacher_id))
         result = cursor.fetchall()
         connection.close()
         result_list = []
