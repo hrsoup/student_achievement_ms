@@ -310,5 +310,34 @@
     </div>
     <div class="background">
     </div>
+    <ul class="pagination">
+      <li>
+        {% if items.has_previous%}
+            <a href="?page={{items.previous_page_number}}">«</a>
+        {% endif %}
+      </li>
+      <li>
+        {% if leftLowerBound > 1 %}
+            <a href="?page=1">1</a>
+            <a>...</a>
+        {% endif %}
+        {% for i  in rangeLeft %}
+            <a href="?page={{ i }}">{{ i }}</a>
+        {% endfor %}
+        <a class="active" href="#">{{items.number}}</a>
+        {% for i in rangeRight %}
+            <a href='?page={{ i }}'>{{ i }}</a>
+        {% endfor %}
+        {% if rightUpperBound < items.paginator.num_pages %}
+            <a>...</a>
+            <a href="?page={{ items.paginator.num_pages }}">{{ items.paginator.num_pages }}</a>
+        {% endif %}
+      </li>
+      <li>
+        {% if items.has_next %}
+            <a href="?page={{items.next_page_number}}">»</a>
+        {% endif %}
+      </li>
+    </ul>
 </body>
 </html>
