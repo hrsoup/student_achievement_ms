@@ -225,7 +225,7 @@
     </div>
      <div class="mainblock">
          <h2>请选择功能并给定数据</h2>
-         <form name="my_form" action="/pro/changeAllCourse" method="post">
+         <form name="my_form" action="/pro/changeallClass" method="post">
              {% csrf_token %}
              <div class="selectbox">
                <select name="my_select">
@@ -235,15 +235,15 @@
                </select>
              </div>
              <div class="inputbox">
-                 <input type="text" name="course_id" required="" >
+                 <input type="text" name="class_id" required="" >
                  <label>班级ID</label>
              </div>
              <div class="inputbox">
-                 <input type="text" name="course_name">
+                 <input type="text" name="dept">
                  <label>院系</label>
              </div>
              <div class="inputbox">
-                 <input type="text" name="credits">
+                 <input type="text" name="major">
                  <label>专业</label>
              </div>
              <div class="submit">

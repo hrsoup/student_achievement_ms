@@ -233,7 +233,7 @@ def indexAllClass(request):#查询班级信息
         print("用户身份不合法")
         return redirect('/pro/illegalUser/')
 
-def changeAllCourse(request):#录入、删除、修改班级信息
+def changeallClass(request):#录入、删除、修改班级信息
     if 'sessionid' in request.COOKIES and request.session['role'] == 'admin':
         teacher_id = request.session['id']
         connection.connect()
@@ -251,8 +251,8 @@ def changeAllCourse(request):#录入、删除、修改班级信息
             class_id = request.POST.get('class_id')
             dept = request.POST.get('dept')
             major = request.POST.get('major')
-            cursor.execute('update class set class_id = "%s", dept = "%s" where \
-                            major = "%s"' % (class_id, credit, course_id))
+            cursor.execute('update class set dept = "%s", major = "%s" where \
+                            class_id = "%s"' % (dept, major, class_id))
 
         elif operation == 'delete': #删除
             class_id = request.POST.get('class_id')
