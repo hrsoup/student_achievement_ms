@@ -231,13 +231,12 @@
     </div>
      <div class="mainblock">
          <h2>请选择功能并给定数据</h2>
-         <form name="my_form" action="/pro/changeAllteach" method="post">
+         <form name="my_form" action="/pro/changeallteach" method="post">
              {% csrf_token %}
              <div class="selectbox">
                <select name="my_select">
                    <option value = "add">录入教师授课信息</option>
                    <option value = "delete">删除教师授课信息</option>
-                   <option value = "update">修改教师授课信息</option>
                </select>
              </div>
              <div class="inputbox">

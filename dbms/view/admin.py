@@ -394,7 +394,195 @@ def changeallClass(request):#录入、删除、修改班级信息
         return redirect('/pro/illegalUser/')
 
 
-#def indexAlltake(request):#查询学生选课信息
-#def changeAlltake(request):#录入、查询、修改学生选课信息
-#def indexAllteach(request):#查询教师授课信息
-#def changeAllteach(request):#录入、查询、修改教师授课信息
+def indexAlltake(request):#查询学生选课信息
+    print("查询所有学生选课信息")
+    if 'sessionid' in request.COOKIES and request.session['role'] == 'admin':
+        teacher_id = request.session['id']
+        connection.connect()
+        cursor = connection.cursor()
+        cursor.execute("select * from take")
+        result = cursor.fetchall()
+        connection.close()
+        result_list = []
+        for r in result:
+            result_list.append({"student_id":r[0],'course_id':r[1],'grade':r[2]})
+        for i in range(0, len(result_list)):
+            print("学生ID:%s 课程ID:%s 分数:%f" % (result_list[i]['student_id'], result_list[i]['course_id']
+                                            , result_list[i]['grade']))
+        return render(request, 'admin6.html', {"data": result_list})
+    else:
+        print("用户身份不合法")
+        return redirect('/pro/illegalUser/')
+
+def changealltake(request):#录入、查询、修改学生选课信息
+    if 'sessionid' in request.COOKIES and request.session['role'] == 'admin':
+        teacher_id = request.session['id']
+        connection.connect()
+        cursor = connection.cursor()
+        operation = request.POST.get('my_select')
+        student_id = request.POST.get('student_id')
+        course_id = request.POST.get('course_id')
+
+        cursor.execute("select * from student where student_id = '%s' " % (student_id))
+        student = cursor.fetchall()
+
+        if operation == 'add': #录入
+            cursor.execute("select * from course where course_id = '%s' " % (course_id))
+            course = cursor.fetchall()
+
+            cursor.execute("select * from take where \
+                            student_id = '%s' and course_id = '%s'" % (student_id, course_id))
+            stu_class = cursor.fetchall()
+
+            error_count = 0
+
+            if len(student) == 0:
+                print("该学生ID不存在")
+                messages.error(request,"该学生ID不存在")
+                error_count += 1      
+            elif len(course) == 0:
+                print("该课程ID不存在")
+                messages.error(request,"该课程ID不存在")
+                error_count += 1             
+            elif len(stu_class) != 0:
+                print("此学生已经选中该课程")
+                messages.error(request,"此学生已经选中该课程")
+                error_count += 1
+            elif error_count == 0: 
+                grade = 0
+                cursor.execute('insert into take values \
+                            ("%s", "%s", "%f")' % (student_id, course_id, grade))
+
+
+        elif operation == 'delete': #删除
+            cursor.execute("select * from course where course_id = '%s' " % (course_id))
+            course = cursor.fetchall()
+
+            cursor.execute("select * from take where \
+                            student_id = '%s' and course_id = '%s'" % (student_id, course_id))
+            stu_class = cursor.fetchall()
+
+            error_count = 0
+            if len(student) == 0:
+                print("该学生ID不存在")
+                messages.error(request,"该学生ID不存在")
+                error_count += 1      
+            elif len(course) == 0:
+                print("该课程ID不存在")
+                messages.error(request,"该课程ID不存在")
+                error_count += 1             
+            elif len(stu_class) == 0:
+                print("此学生并未选中该课程")
+                messages.error(request,"此学生并未选中该课程")
+                error_count += 1
+            elif error_count == 0: 
+                cursor.execute('delete from take where student_id = "%s" and course_id = "%s"' % (student_id, course_id))
+
+        cursor.execute("select * from take")
+        result = cursor.fetchall()
+        connection.close()
+        result_list = []
+        for r in result:
+            result_list.append({"student_id":r[0],'course_id':r[1],'grade':r[2]})
+        for i in range(0, len(result_list)):
+            print("学生ID:%s 课程ID:%s 分数:%f" % (result_list[i]['student_id'], result_list[i]['course_id']
+                                            , result_list[i]['grade']))
+        return render(request, 'admin6.html', {"data": result_list})
+    else:
+        print("用户身份不合法")
+        return redirect('/pro/illegalUser/')
+
+
+def indexAllteach(request):#查询教师授课信息
+    print("查询教师授课信息")
+    if 'sessionid' in request.COOKIES and request.session['role'] == 'admin':
+        teacher_id = request.session['id']
+        connection.connect()
+        cursor = connection.cursor()
+        cursor.execute("select * from teach")
+        result = cursor.fetchall()
+        connection.close()
+        result_list = []
+        for r in result:
+            result_list.append({"teacher_id":r[0],'course_id':r[1]})
+        for i in range(0, len(result_list)):
+            print("教师ID:%s 课程ID:%s" % (result_list[i]['teacher_id'], result_list[i]['course_id']))
+        return render(request, 'admin7.html', {"data": result_list})
+    else:
+        print("用户身份不合法")
+        return redirect('/pro/illegalUser/')   
+
+def changeallteach(request):#录入、查询、修改教师授课信息
+    if 'sessionid' in request.COOKIES and request.session['role'] == 'admin':
+        teacher_id = request.session['id']
+        connection.connect()
+        cursor = connection.cursor()
+        operation = request.POST.get('my_select')
+        teacher_id = request.POST.get('teacher_id')
+        course_id = request.POST.get('course_id')
+
+        cursor.execute("select * from teacher where teacher_id = '%s' " % (teacher_id))
+        teacher = cursor.fetchall()
+
+        if operation == 'add': #录入
+            cursor.execute("select * from course where course_id = '%s' " % (course_id))
+            course = cursor.fetchall()
+
+            cursor.execute("select * from teach where \
+                            teacher_id = '%s' and course_id = '%s'" % (teacher_id, course_id))
+            tea_course = cursor.fetchall()
+
+            error_count = 0
+            if len(teacher) == 0:
+                print("该教师ID不存在")
+                messages.error(request,"该教师ID不存在")
+                error_count += 1      
+            elif len(course) == 0:
+                print("该课程ID不存在")
+                messages.error(request,"该课程ID不存在")
+                error_count += 1             
+            elif len(tea_course) != 0:
+                print("此教师已经教授该课程")
+                messages.error(request,"此教师已经教授该课程")
+                error_count += 1
+            elif error_count == 0: 
+                grade = 0
+                cursor.execute('insert into teach values \
+                            ("%s", "%s")' % (teacher_id, course_id))
+
+        elif operation == 'delete': #删除
+            cursor.execute("select * from course where course_id = '%s' " % (course_id))
+            course = cursor.fetchall()
+
+            cursor.execute("select * from teach where \
+                            teacher_id = '%s' and course_id = '%s'" % (teacher_id, course_id))
+            stu_class = cursor.fetchall()
+            
+            error_count = 0
+            if len(teacher) == 0:
+                print("该教师ID不存在")
+                messages.error(request,"该教师ID不存在")
+                error_count += 1      
+            elif len(course) == 0:
+                print("该课程ID不存在")
+                messages.error(request,"该课程ID不存在")
+                error_count += 1             
+            elif len(tea_course) == 0:
+                print("此教师并未教授该课程")
+                messages.error(request,"此教师并未教授该课程")
+                error_count += 1
+            elif error_count == 0: 
+                cursor.execute('delete from teach where teacher_id = "%s" and course_id = "%s"' % (teacher_id, course_id))
+
+        cursor.execute("select * from teach")
+        result = cursor.fetchall()
+        connection.close()
+        result_list = []
+        for r in result:
+            result_list.append({"teacher_id":r[0],'course_id':r[1]})
+        for i in range(0, len(result_list)):
+            print("教师ID:%s 课程ID:%s" % (result_list[i]['teacher_id'], result_list[i]['course_id']))
+        return render(request, 'admin7.html', {"data": result_list})
+    else:
+        print("用户身份不合法")
+        return redirect('/pro/illegalUser/')

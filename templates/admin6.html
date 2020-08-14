@@ -218,15 +218,13 @@
     <div class="tableblock">
         <table height="50px" width="1027px" border="5">
         <tr>
-            <th>班级ID</th>
-            <th>院系</th>
-            <th>专业</th>
+            <th>学生ID</th>
+            <th>课程ID</th>
         </tr>
             {%for temp in data%}
             <tr>
-            <td>{{temp.class_id}}</td>
-            <td>{{temp.dept}}</td>
-            <td>{{temp.major}}</td>
+            <td>{{temp.student_id}}</td>
+            <td>{{temp.course_id}}</td>
             </tr>
             {% endfor %}
         </table>
@@ -239,15 +237,14 @@
                <select name="my_select">
                    <option value = "add">录入学生选课信息</option>
                    <option value = "delete">删除学生选课信息</option>
-                   <option value = "update">修改学生选课信息</option>
                </select>
              </div>
              <div class="inputbox">
-                 <input type="text" name="class_id" required="" >
+                 <input type="text" name="student_id" required="" >
                  <label>学生ID</label>
              </div>
              <div class="inputbox">
-                 <input type="text" name="dept">
+                 <input type="text" name="course_id">
                  <label>课程ID</label>
              </div>
              <div class="submit">
