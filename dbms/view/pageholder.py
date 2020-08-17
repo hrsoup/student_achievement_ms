@@ -1,7 +1,6 @@
 from django.core.paginator import Paginator,InvalidPage,EmptyPage,PageNotAnInteger
 
 Capacity=15
-pages=7
 leftneibor=3
 rightneibor=3
 
