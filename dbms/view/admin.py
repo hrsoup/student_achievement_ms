@@ -475,7 +475,8 @@ def changealltake(request):#录入、删除学生选课信息
                 messages.error(request,"此学生并未选中该课程")
                 error_count += 1
             elif error_count == 0: 
-                cursor.execute('delete from take where student_id = "%s" and course_id = "%s"' % (student_id, course_id))
+                cursor.execute('delete from take \
+                    where student_id = "%s" and course_id = "%s"' % (student_id, course_id))
 
         cursor.execute("select take.student_id, student_name, take.course_id, course_name from \
                         take natural join student natural join course \
@@ -502,14 +503,14 @@ def changeallteach(request):#录入、删除教师授课信息
 
         cursor.execute("select * from teacher where teacher_id = '%s' " % (teacher_id))
         teacher = cursor.fetchall()
+        cursor.execute("select * from course where course_id = '%s' " % (course_id))
+        course = cursor.fetchall()
+
+        cursor.execute("select * from teach where \
+                        teacher_id = '%s' and course_id = '%s'" % (teacher_id, course_id))
+        tea_course = cursor.fetchall()
 
         if operation == 'add': #录入
-            cursor.execute("select * from course where course_id = '%s' " % (course_id))
-            course = cursor.fetchall()
-
-            cursor.execute("select * from teach where \
-                            teacher_id = '%s' and course_id = '%s'" % (teacher_id, course_id))
-            tea_course = cursor.fetchall()
 
             error_count = 0
             if len(teacher) == 0:
@@ -530,12 +531,6 @@ def changeallteach(request):#录入、删除教师授课信息
                             ("%s", "%s")' % (teacher_id, course_id))
 
         elif operation == 'delete': #删除
-            cursor.execute("select * from course where course_id = '%s' " % (course_id))
-            course = cursor.fetchall()
-
-            cursor.execute("select * from teach where \
-                            teacher_id = '%s' and course_id = '%s'" % (teacher_id, course_id))
-            tea_course = cursor.fetchall()
             
             error_count = 0
             if len(teacher) == 0:
