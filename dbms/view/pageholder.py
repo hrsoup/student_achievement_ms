@@ -2,7 +2,7 @@ from django.core.paginator import Paginator,InvalidPage,EmptyPage,PageNotAnInteg
 
 Capacity=15
 pages=7
-leftneibor=2
+leftneibor=3
 rightneibor=3
 
 def pageBuilder(data,page):
@@ -38,8 +38,8 @@ def pageBuilder(data,page):
         left=previous_page_number
         right=neibor-left    
 
-    if(page-left-1>0):
-        leftLowerBound=page-left-1
+    if(page-left>0):
+        leftLowerBound=page-left
     else:
         leftLowerBound=1
     leftUpperBound=page-1
