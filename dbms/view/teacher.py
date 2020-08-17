@@ -95,7 +95,8 @@ def changeTGrade(request):#录入、删除、修改所授课程学生成绩信�
 
         if operation == 'update': #修改
             grade = request.POST.get('grade')
-            cursor.execute("select * from take where course_id = '%s' and student_id = '%s'" % (course_id, student_id))
+            cursor.execute("select * from take \
+                            where course_id = '%s' and student_id = '%s'" % (course_id, student_id))
             grades = cursor.fetchall()
             error_count = 0 
             if len(student) == 0:
@@ -117,7 +118,8 @@ def changeTGrade(request):#录入、删除、修改所授课程学生成绩信�
             elif error_count == 0:
                 grade = float(grade)
                 cursor.execute('update take set \
-                                grade = "%f" where (student_id = "%s") and (course_id = "%s")' % (grade, student_id, course_id))
+                                grade = "%f" where (student_id = "%s") \
+                                and (course_id = "%s")' % (grade, student_id, course_id))
 
         cursor.execute("select take.student_id,student_name,take.course_id,course_name,credits,grade \
                         from student natural join course natural join take natural join teach \

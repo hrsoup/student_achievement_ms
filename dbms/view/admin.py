@@ -420,7 +420,7 @@ def changeallClass(request):#录入、删除、修改班级信息
         print("用户身份不合法")
         return redirect('/pro/illegalUser/')
 
-def changealltake(request):#录入、查询、修改学生选课信息
+def changealltake(request):#录入、删除学生选课信息
     page=request.GET.get('page',1)
     if 'sessionid' in request.COOKIES and request.session['role'] == 'admin':
         teacher_id = request.session['id']
@@ -432,17 +432,15 @@ def changealltake(request):#录入、查询、修改学生选课信息
 
         cursor.execute("select * from student where student_id = '%s' " % (student_id))
         student = cursor.fetchall()
+        cursor.execute("select * from course where course_id = '%s' " % (course_id))
+        course = cursor.fetchall()
+        cursor.execute("select * from take where \
+                        student_id = '%s' and course_id = '%s'" % (student_id, course_id))
+        stu_class = cursor.fetchall()
 
         if operation == 'add': #录入
-            cursor.execute("select * from course where course_id = '%s' " % (course_id))
-            course = cursor.fetchall()
-
-            cursor.execute("select * from take where \
-                            student_id = '%s' and course_id = '%s'" % (student_id, course_id))
-            stu_class = cursor.fetchall()
 
             error_count = 0
-
             if len(student) == 0:
                 print("该学生ID不存在")
                 messages.error(request,"该学生ID不存在")
@@ -462,12 +460,6 @@ def changealltake(request):#录入、查询、修改学生选课信息
 
 
         elif operation == 'delete': #删除
-            cursor.execute("select * from course where course_id = '%s' " % (course_id))
-            course = cursor.fetchall()
-
-            cursor.execute("select * from take where \
-                            student_id = '%s' and course_id = '%s'" % (student_id, course_id))
-            stu_class = cursor.fetchall()
 
             error_count = 0
             if len(student) == 0:
@@ -498,7 +490,7 @@ def changealltake(request):#录入、查询、修改学生选课信息
         print("用户身份不合法")
         return redirect('/pro/illegalUser/') 
 
-def changeallteach(request):#录入、查询、修改教师授课信息
+def changeallteach(request):#录入、删除教师授课信息
     page=request.GET.get('page',1)
     if 'sessionid' in request.COOKIES and request.session['role'] == 'admin':
         teacher_id = request.session['id']
